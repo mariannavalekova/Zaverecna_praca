@@ -1,26 +1,16 @@
 import { fileURLToPath, URL } from 'node:url'
+
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
-// https://vitejs.dev/config/
+// https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    vue(),
+    vue()
   ],
-  base: process.env.NODE_ENV === 'production'
-    ? '/dist/' // set the base to '/dist/' when in production mode
-    : '/',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
-    }
-  },
-  server: {
-    proxy: {
-      '/Backend': {
-        target: 'http://localhost',
-        changeOrigin: true,
-      },
     },
   },
 })

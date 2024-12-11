@@ -1,5 +1,5 @@
 {
-  "name": "projekt_zp",
+  "name": "codebara",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -11,11 +11,12 @@
   "dependencies": {
     "bootstrap": "^5.3.3",
     "pinia": "^2.2.4",
+    "skulpt": "^1.2.0",
     "vue": "^3.5.12",
     "vue-router": "^4.4.5"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.1.4",
-    "vite": "^5.4.8"
+    "@vitejs/plugin-vue": "^5.2.1",
+    "vite": "^6.0.1"
   }
 }
