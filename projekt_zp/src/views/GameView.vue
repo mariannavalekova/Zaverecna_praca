@@ -1,7 +1,8 @@
 <template>
   <div id="game">
-    <h1>Code Game</h1>
-    <p>text ktory by sa mal rendernut</p>
+    <div class="assignment-text">
+      Write code to move around the stone and reach the orange. 
+    </div>
     <div class="game-container">
       <div class="visualization-container">
         <VisualizationView :heroPosition="heroPosition" :heroImage="heroImage" />
@@ -84,13 +85,12 @@ export default {
         return;
       }
 
-      
       this.resetCapy();
 
-      this.errorMessage = ""; 
+      this.errorMessage = "";
 
       try {
-        addCapyToSkulpt(this); 
+        addCapyToSkulpt(this);
         const result = executePythonSync(
           userCode,
           () => {
@@ -125,6 +125,21 @@ h1 {
   font-size: 2em;
 }
 
+.assignment-text {
+  width: 80%;
+  max-width: 1400px;
+  padding: 15px;
+  margin: 10px 0;
+  border: 1px solid #eba857;
+  border-radius: 8px;
+  background-color: #f5d1a3;
+  color: #3e2c17;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  box-sizing: border-box;
+}
+
 .game-container {
   display: flex;
   width: 80%; 
@@ -135,7 +150,6 @@ h1 {
   overflow: hidden;
 }
 
-
 .visualization-container {
   width: 50%;
   background-color: #f4f4f4;
@@ -144,7 +158,6 @@ h1 {
   align-items: center;
   border-right: 1px solid #ccc;
 }
-
 
 .input-container {
   width: 50%;

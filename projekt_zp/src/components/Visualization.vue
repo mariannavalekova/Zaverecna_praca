@@ -19,17 +19,20 @@
   
   <style scoped>
   .visualization-view {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background-color: #c4f5ff; 
-    overflow: hidden;
-  }
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-image: url("src/assets/rb_1308.png");
+  background-size: cover; /* Ensures the image covers the entire div */
+  background-position: center; /* Centers the image in the div */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  overflow: hidden;
+}
   
   .hero {
     position: absolute;
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     background-size: contain;
     background-repeat: no-repeat;
    /* transition: all 0.5s ease-in-out; Smooth movement */

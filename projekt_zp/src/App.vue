@@ -21,3 +21,14 @@ export default {
   }
 }
 </script>
+<style>
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: #f5f4eb; /* Light beige background */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+</style>

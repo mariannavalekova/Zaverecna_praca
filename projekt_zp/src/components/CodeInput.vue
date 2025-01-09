@@ -44,8 +44,8 @@ textarea {
 button {
   align-self: flex-end;
   padding: 8px 16px;
-  background-color: #007bff;
-  color: #fff;
+  background-color: #f5d1a3;
+  color: #3e2c17;
   border: none;
   border-radius: 4px;
   cursor: pointer;
