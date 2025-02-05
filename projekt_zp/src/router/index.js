@@ -59,6 +59,11 @@ const routes = [
     name: 'chapter-creator',
     component: () => import('../views/ChapterCreatorView.vue')
   },
+  {
+    path: '/level-creator',
+    name: 'level-creator',
+    component: () => import('../views/LevelCreatorView.vue')
+  },
 ];
 
 const router = createRouter({

@@ -49,7 +49,7 @@
         }
         try {
           const response = await fetch(
-            `./codebara-backend/levels-api/GetStudentLevelsDashboardAPI.php?user_id=${loginStore.user_id}`
+            `./codebara-backend/level-api/GetStudentLevelsDashboardAPI.php?user_id=${loginStore.user_id}`
           );
           const data = await response.json();
           if (data.error) {

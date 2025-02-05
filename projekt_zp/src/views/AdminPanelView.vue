@@ -29,7 +29,7 @@
               <div class="col-md-8">
                 <div class="card-body">
                   <h5 class="card-title">Level Creator</h5>
-                  <router-link :to="{ name: '' }" class="nav-link">
+                  <router-link :to="{ name: 'level-creator' }" class="nav-link">
                     <span class="btn custom-button-color custom-button-margin">Otvoriť</span>
                   </router-link>
                 </div>
