@@ -1,24 +1,60 @@
 <template>
   <div class="navbar">
     <div class="left-section">
-      <router-link to="/" class="logo">
+      <!-- Logo now links to homeRoute -->
+      <router-link :to="homeRoute" class="logo">
         <img src="@/assets/logo.png" alt="Code bara logo" class="logo-image" />
       </router-link>
       <div class="menu">
-        <router-link to="/" class="menu-item">Home</router-link>
+        <!-- Home now uses homeRoute -->
+        <router-link :to="homeRoute" class="menu-item">Home</router-link>
+        <!-- Other menu links -->
         <router-link to="/learn" class="menu-item">Learn</router-link>
         <router-link to="/play" class="menu-item">Play</router-link>
       </div>
     </div>
     <div class="auth">
-      <router-link to="/account" class="menu-item">Account</router-link>
-      <router-link to="/signin" class="menu-item">Sign In</router-link>
+      <!-- Show the Account link and Log Out button if user is logged in -->
+      <router-link v-if="isUserLoggedIn" to="/account" class="menu-item">Account</router-link>
+      <button v-if="isUserLoggedIn" @click="logout" class="menu-item logout-button">Log Out</button>
+      <!-- Show the Sign In link if the user is not logged in -->
+      <router-link v-else to="/signin" class="menu-item">Sign In</router-link>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+import { computed } from 'vue';
+import { useLoginStore } from '@/stores/loginStore';
+import { useRouter } from 'vue-router';
+
+export default {
+  setup() {
+    const loginStore = useLoginStore();
+    const router = useRouter();
+
+    // Check if the user is logged in
+    const isUserLoggedIn = computed(() => loginStore.userAuthorised);
+    // Determine if the logged-in user is a teacher
+    const isTeacher = computed(() => loginStore.user_is_teacher);
+    // Set the home route: teachers go to their dashboard, students go to theirs
+    const homeRoute = computed(() =>
+      isTeacher.value ? '/teacher-dashboard' : '/student-dashboard'
+    );
+
+    // Log out by clearing the store and redirecting to the home page
+    const logout = () => {
+      loginStore.clearToken();
+      router.push('/');
+    };
+
+    return {
+      isUserLoggedIn,
+      homeRoute,
+      logout,
+    };
+  },
+};
 </script>
 
 <style scoped>
@@ -54,6 +90,7 @@ export default {};
   gap: 20px; /* Custom spacing between authentication items */
 }
 
+/* Style links and buttons similarly */
 .menu-item {
   color: #38210d; /* Custom text color */
   font-family: "Jaro-Regular", sans-serif;
@@ -61,6 +98,9 @@ export default {};
   font-weight: 400;
   text-decoration: none;
   cursor: pointer;
+  background: none;
+  border: none;
+  padding: 0;
 }
 
 .menu-item:hover {

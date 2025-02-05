@@ -33,7 +33,7 @@ class Database {
 }
 
 function connect_to_database() {
-    $database = new Database('127.0.0.1', 3306,'root', '', 'codebara');
+    $database = new Database('127.0.0.1', 3307,'root', '', 'codebara');
     $connection = $database->connect();
     
     return $connection;

@@ -1,4 +1,5 @@
 <?php
+
 // Enable error reporting for debugging (disable in production)
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
@@ -73,12 +74,15 @@ function UserLogin() {
 
         // Determine if the user is an admin (role set to 'admin' signifies admin privileges)
         $user_is_admin = ($user['role'] === 'admin');
+        // Determine if the user is a teacher based on the is_teacher field
+        $user_is_teacher = $user['is_teacher'] ? true : false;
 
         // Return the JWT and user data as JSON
         echo json_encode([
-            'access_token'  => $jwt,
-            'user_id'       => $user['user_id'],
-            'user_is_admin' => $user_is_admin
+            'access_token'    => $jwt,
+            'user_id'         => $user['user_id'],
+            'user_is_admin'   => $user_is_admin,
+            'user_is_teacher' => $user_is_teacher
         ]);
 
     } catch (PDOException $e) {
