@@ -12,7 +12,7 @@
 export default {
   data() {
     return {
-      userCode: `capy.move("up", 3)\ncapy.move("right", 3)`, 
+      userCode: `capy.moveRight(3)\ncapy.moveDown(3)`, 
     };
   },
   methods: {

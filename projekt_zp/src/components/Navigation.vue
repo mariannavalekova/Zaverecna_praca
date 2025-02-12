@@ -10,7 +10,7 @@
         <router-link :to="homeRoute" class="menu-item">Home</router-link>
         <!-- Other menu links -->
         <router-link to="/learn" class="menu-item">Learn</router-link>
-        <router-link to="/play" class="menu-item">Play</router-link>
+        
       </div>
     </div>
     <div class="auth">

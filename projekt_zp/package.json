@@ -10,9 +10,12 @@
   },
   "dependencies": {
     "bootstrap": "^5.3.3",
+    "fabric": "^6.5.4",
+    "konva": "^9.3.18",
     "pinia": "^2.2.4",
     "skulpt": "^1.2.0",
     "vue": "^3.5.12",
+    "vue-konva": "^3.2.0",
     "vue-router": "^4.4.5"
   },
   "devDependencies": {

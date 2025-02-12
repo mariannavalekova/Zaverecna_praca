@@ -8,7 +8,7 @@ const routes = [
     component: () => import('../views/LearnView.vue')
   },
   {
-    path: '/play',
+    path: '/play/:level_id',
     name: 'game',
     component: () => import('../views/GameView.vue')
   },
@@ -63,6 +63,13 @@ const routes = [
     path: '/level-creator',
     name: 'level-creator',
     component: () => import('../views/LevelCreatorView.vue')
+  },
+
+  // NEW ROUTE FOR LEVEL EDITOR
+  {
+    path: '/level-editor/:level_id',
+    name: 'level-editor',
+    component: () => import('../views/LevelEditorView.vue')
   },
 ];
 
