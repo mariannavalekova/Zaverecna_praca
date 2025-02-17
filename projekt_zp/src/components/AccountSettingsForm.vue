@@ -2,25 +2,21 @@
     <div class="container mt-4">
       <h2>Account Settings</h2>
       <form @submit.prevent="openSaveModal">
-        <!-- Username -->
         <div class="mb-3">
           <label class="form-label">Username</label>
           <input type="text" class="form-control" v-model="form.username" :disabled="!isEditing" />
         </div>
   
-        <!-- Email -->
         <div class="mb-3">
           <label class="form-label">Email</label>
           <input type="email" class="form-control" v-model="form.email" :disabled="!isEditing" required />
         </div>
   
-        <!-- Teacher Checkbox -->
         <div class="form-check mb-3">
           <input class="form-check-input" type="checkbox" v-model="form.is_teacher" :disabled="!isEditing" />
           <label class="form-check-label">Set as Teacher</label>
         </div>
   
-        <!-- Additional Fields (Visible only if is_teacher is true) -->
         <div v-if="form.is_teacher">
           <div class="mb-3">
             <label class="form-label">School Name</label>
@@ -36,7 +32,6 @@
           </div>
         </div>
   
-        <!-- Buttons -->
         <div class="mt-3">
           <button type="button" class="btn btn-primary me-2" @click="startEditing" v-if="!isEditing">Edit</button>
           <button type="button" class="btn btn-success me-2" @click="openSaveModal" v-if="isEditing">Save</button>
@@ -44,7 +39,6 @@
         </div>
       </form>
   
-      <!-- Save Modal -->
       <div class="modal fade" id="saveModal" tabindex="-1">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -63,7 +57,6 @@
         </div>
       </div>
   
-      <!-- Cancel Modal -->
       <div class="modal fade" id="cancelModal" tabindex="-1">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -85,9 +78,9 @@
   </template>
   
   <script>
-  // Import Bootstrap so that bootstrap.Modal is defined
+
   import * as bootstrap from "bootstrap";
-  import { useLoginStore } from "@/stores/loginStore"; // Import Pinia store
+  import { useLoginStore } from "@/stores/loginStore"; 
   
   export default {
     data() {
@@ -110,7 +103,6 @@
         if (!loginStore.user_id) return;
   
         try {
-          // Use the new GET endpoint
           const response = await fetch(`./codebara-backend/account-api/UserSettingsGetAPI.php?user_id=${loginStore.user_id}`);
           const data = await response.json();
           if (data.error) {
@@ -128,7 +120,6 @@
         if (!loginStore.user_id) return;
   
         try {
-          // Use the new POST endpoint
           const response = await fetch("./codebara-backend/account-api/UserSettingsUpdateAPI.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -139,7 +130,6 @@
           if (result.success) {
             this.isEditing = false;
             this.originalForm = JSON.parse(JSON.stringify(this.form));
-            // Hide the modal after successful update
             const modalEl = document.getElementById("saveModal");
             const modal = bootstrap.Modal.getInstance(modalEl);
             if (modal) modal.hide();
@@ -153,7 +143,6 @@
       resetForm() {
         this.form = JSON.parse(JSON.stringify(this.originalForm));
         this.isEditing = false;
-        // Hide the cancel modal if it is open
         const modalEl = document.getElementById("cancelModal");
         const modal = bootstrap.Modal.getInstance(modalEl);
         if (modal) modal.hide();

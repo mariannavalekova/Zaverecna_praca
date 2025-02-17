@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hostiteľ: 127.0.0.1:3307
--- Čas generovania: St 05.Feb 2025, 14:12
+-- Čas generovania: Po 17.Feb 2025, 16:40
 -- Verzia serveru: 10.4.32-MariaDB
 -- Verzia PHP: 8.2.12
 
@@ -31,6 +31,14 @@ CREATE TABLE `chapters` (
   `chapter_id` int(11) NOT NULL,
   `title` varchar(45) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Sťahujem dáta pre tabuľku `chapters`
+--
+
+INSERT INTO `chapters` (`chapter_id`, `title`) VALUES
+(2, 'Variables'),
+(3, 'Looooooooooops');
 
 -- --------------------------------------------------------
 
@@ -81,6 +89,13 @@ CREATE TABLE `completed_levels` (
   `date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Sťahujem dáta pre tabuľku `completed_levels`
+--
+
+INSERT INTO `completed_levels` (`user_id`, `level_id`, `date`) VALUES
+(7, 3, '2025-02-17 16:38:29');
+
 -- --------------------------------------------------------
 
 --
@@ -90,10 +105,18 @@ CREATE TABLE `completed_levels` (
 CREATE TABLE `levels` (
   `level_id` int(11) NOT NULL,
   `title` varchar(45) NOT NULL,
-  `description` mediumtext NOT NULL,
-  `aswer_string` varchar(255) NOT NULL,
-  `chapter_id` int(11) NOT NULL
+  `chapter_id` int(11) NOT NULL,
+  `description` mediumtext DEFAULT NULL,
+  `tangerine_count` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Sťahujem dáta pre tabuľku `levels`
+--
+
+INSERT INTO `levels` (`level_id`, `title`, `chapter_id`, `description`, `tangerine_count`) VALUES
+(2, 'Level1', 2, 'levelino', NULL),
+(3, 'for loop', 3, 'Collect 2 tangerinos', 2);
 
 -- --------------------------------------------------------
 
@@ -109,6 +132,22 @@ CREATE TABLE `obstacles` (
   `position_x` int(11) NOT NULL,
   `position_y` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Sťahujem dáta pre tabuľku `obstacles`
+--
+
+INSERT INTO `obstacles` (`obstacle_id`, `level_id`, `image_path`, `type`, `position_x`, `position_y`) VALUES
+(31, 2, '/src/assets/tangerine.png', 'tangerine', 467, 405),
+(32, 2, '/src/assets/rock.jpg', 'rock', 502, 529),
+(33, 2, '/src/assets/rock.jpg', 'rock', 6, 367),
+(34, 2, '/src/assets/tangerine.png', 'tangerine', 427, 265),
+(35, 2, '/src/assets/tangerine.png', 'tangerine', 366, 125),
+(36, 2, '/src/assets/finish.png', 'finish', 168, 175),
+(52, 3, '/src/assets/tangerine.png', 'tangerine', 299, 250),
+(53, 3, '/src/assets/rock.jpg', 'rock', 507, 469),
+(54, 3, '/src/assets/finish.png', 'finish', 304, 398),
+(55, 3, '/src/assets/tangerine.png', 'tangerine', 300, 103);
 
 -- --------------------------------------------------------
 
@@ -198,7 +237,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT pre tabuľku `chapters`
 --
 ALTER TABLE `chapters`
-  MODIFY `chapter_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `chapter_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pre tabuľku `class`
@@ -210,13 +249,13 @@ ALTER TABLE `class`
 -- AUTO_INCREMENT pre tabuľku `levels`
 --
 ALTER TABLE `levels`
-  MODIFY `level_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `level_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT pre tabuľku `obstacles`
 --
 ALTER TABLE `obstacles`
-  MODIFY `obstacle_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `obstacle_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT pre tabuľku `users`

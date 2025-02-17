@@ -1,6 +1,5 @@
 <template>
   <div id="game">
-    <!-- Display the level description from the database -->
     <div class="assignment-text">
       <span v-if="level && level.description">
         {{ level.description }}
@@ -10,10 +9,14 @@
       </span>
     </div>
 
+    <div class="tangerine-count">
+      Tangerines Collected: {{ tangerinesCollected }}
+    </div>
+
     <div class="game-container">
       <div class="visualization-container">
-        <!-- Pass the loaded obstacles and level data into Visualization -->
         <VisualizationView
+          :key="visualizationKey"
           :heroPosition="heroPosition"
           :heroImage="heroImage"
           :obstacles="obstacles"
@@ -30,12 +33,14 @@
 </template>
 
 <script>
-import { executePythonSync } from "@/services/skulptRunner";
+import { executePythonAsync } from "@/services/skulptRunner";
 import { addCapyToSkulpt } from "@/services/capy";
 
 import VisualizationView from "@/components/Visualization.vue";
 import ErrorDisplayView from "@/components/ErrorDisplay.vue";
 import CodeInputView from "@/components/CodeInput.vue";
+
+import { useLoginStore } from "@/stores/loginStore"; 
 
 export default {
   components: {
@@ -48,9 +53,13 @@ export default {
       heroPosition: { x: 100, y: 100 },
       heroImage: "/src/assets/idle.gif",
       errorMessage: "",
+      level: null,             
+      obstacles: [],
+      originalObstacles: [],   
+      tangerinesCollected: 0,
+      visualizationKey: 0,     
 
-      level: null, // e.g. { level_id, title, description }
-      obstacles: [], // array of obstacles
+      userId: null,
     };
   },
   methods: {
@@ -61,10 +70,8 @@ export default {
       const animate = (currentTime) => {
         const elapsed = currentTime - startTime;
         const fraction = Math.min(elapsed / duration, 1);
-
         const currentX = startX + (newX - startX) * fraction;
         const currentY = startY + (newY - startY) * fraction;
-
         this.heroPosition = { x: currentX, y: currentY };
         if (fraction < 1) {
           requestAnimationFrame(animate);
@@ -93,18 +100,24 @@ export default {
       this.heroImage = "/src/assets/idle.gif";
     },
 
-    executeUserCode(userCode) {
+    async executeUserCode(userCode) {
       if (!userCode || userCode.trim() === "") {
         this.errorMessage = "No code to execute. Please write some code.";
         return;
       }
       this.resetCapy();
+      this.tangerinesCollected = 0;
+      this.obstacles = JSON.parse(JSON.stringify(this.originalObstacles));
+      this.visualizationKey++;
+
       this.errorMessage = "";
       try {
         addCapyToSkulpt(this);
-        const result = executePythonSync(
+        const result = await executePythonAsync(
           userCode,
-          () => { console.log("Execution completed."); },
+          (result) => {
+            console.log("Execution completed.", result);
+          },
           (err) => {
             console.error(err.toString());
             this.errorMessage = err.toString();
@@ -119,23 +132,66 @@ export default {
 
     async fetchLevelData(levelId) {
       try {
-        const response = await fetch(`/codebara-backend/level-api/GetLevelDetailsAPI.php?level_id=${levelId}`);
+        const response = await fetch(
+          `/codebara-backend/level-api/GetLevelDetailsAPI.php?level_id=${levelId}`
+        );
         const data = await response.json();
         if (data.error) {
           this.errorMessage = data.error;
           return;
         }
-        // Store the loaded data in local state
-        this.level = data.level;
+
+        this.level = data.level; 
         this.obstacles = data.obstacles || [];
+
+        this.originalObstacles = JSON.parse(
+          JSON.stringify(data.obstacles || [])
+        );
       } catch (error) {
         console.error("Failed to load level data:", error);
         this.errorMessage = "Failed to load level data.";
       }
     },
+
+    async levelCompleted() {
+      if (this.tangerinesCollected < this.level.tangerine_count) {
+        alert(
+          `You need at least ${this.level.tangerine_count} tangerines to finish. Currently: ${this.tangerinesCollected}`
+        );
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          "/codebara-backend/level-api/CompleteLevelAPI.php",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              user_id: this.userId,            
+              level_id: this.level.level_id,
+            }),
+          }
+        );
+
+        const data = await response.json();
+        if (data.success) {
+          alert("Level Completed!");
+          this.$router.push("/student-dashboard");
+        } else {
+          this.errorMessage = data.error || "Error completing level.";
+          alert(this.errorMessage);
+        }
+      } catch (err) {
+        this.errorMessage = err.message || err.toString();
+        alert(this.errorMessage);
+      }
+    },
   },
 
   mounted() {
+    const loginStore = useLoginStore();
+    this.userId = Number(loginStore.user_id) || null;
     const levelId = this.$route.params.level_id || 2;
     this.fetchLevelData(levelId);
   },
@@ -165,33 +221,65 @@ export default {
   box-sizing: border-box;
 }
 
-.game-container {
-  display: flex;
-  width: 80%;
-  max-width: 1400px;
-  height: 80vh; /* or you can remove this so it doesn't constrain the 700x700 view */
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  overflow: hidden;
+.tangerine-count {
+  margin-bottom: 10px;
+  font-size: 16px;
+  font-weight: bold;
 }
 
-/* The left half container that houses the 700x700 area */
 .visualization-container {
+  width: 500px;
+  height: 500px;
+  min-width: 500px;
+  min-height: 500px;
+  border-right: 1px solid #ccc;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-right: 1px solid #ccc;
-  width: 50%;
-  /* You could let it auto-size around 700x700 or keep fixed constraints. 
-     For example: min-width: 700px; if you want enough space. */
+  flex-shrink: 0;
+  overflow: hidden;
+  position: relative;
 }
 
 .input-container {
   width: 50%;
+  min-width: 300px;
+  max-width: 500px;
+  height: 500px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   padding: 10px;
   box-sizing: border-box;
+}
+
+.game-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  min-width: 500px;
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+@media screen and (max-width: 900px) {
+  .game-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .visualization-container {
+    width: 500px;
+    height: 500px;
+    min-width: 500px;
+    min-height: 500px;
+    overflow: visible;
+  }
+  .input-container {
+    width: 90%;
+    max-width: 500px;
+    height: 500px;
+  }
 }
 
 .error-display {

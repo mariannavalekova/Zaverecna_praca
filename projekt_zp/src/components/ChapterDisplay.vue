@@ -52,7 +52,6 @@
   </template>
   
   <script>
-  // Import Bootstrap's modal functionality
   import * as bootstrap from "bootstrap";
   
   export default {

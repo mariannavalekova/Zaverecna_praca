@@ -20,7 +20,6 @@ function getUserSettings() {
     $conn = connect_to_database();
 
     try {
-        // Note: The "role" field is omitted since it’s not needed in the client.
         $stmt = $conn->prepare("SELECT username, email, school_name, teacher_name, teacher_surname, is_teacher FROM users WHERE user_id = :user_id");
         $stmt->execute(['user_id' => $userId]);
         $userData = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -37,6 +36,5 @@ function getUserSettings() {
     }
 }
 
-// Call the function to process the request.
 getUserSettings();
 ?>

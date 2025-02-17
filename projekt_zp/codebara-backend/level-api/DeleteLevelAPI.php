@@ -5,7 +5,7 @@ function delete_level_api() {
     header('Content-Type: application/json');
 
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        http_response_code(405); // Method Not Allowed
+        http_response_code(405); 
         echo json_encode(['error' => 'Only POST requests are allowed.']);
         exit;
     }

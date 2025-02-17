@@ -5,7 +5,7 @@ function get_levels_api() {
     header('Content-Type: application/json');
 
     if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
-        http_response_code(405); // Method Not Allowed
+        http_response_code(405); 
         echo json_encode(['error' => 'Only GET requests are allowed.']);
         exit;
     }
@@ -20,7 +20,7 @@ function get_levels_api() {
     $conn = connect_to_database();
 
     try {
-        $stmt = $conn->prepare("SELECT level_id, title, chapter_id, description, aswer_string FROM levels WHERE chapter_id = :chapter_id ORDER BY level_id ASC");
+        $stmt = $conn->prepare("SELECT level_id, title, chapter_id, description, tangerine_count FROM levels WHERE chapter_id = :chapter_id ORDER BY level_id ASC");
         $stmt->execute(['chapter_id' => $chapter_id]);
         $levels = $stmt->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode(['levels' => $levels]);

@@ -4,14 +4,12 @@ require_once '../config.php';
 function getStudentLevelsDashboard() {
     header('Content-Type: application/json');
 
-    // Allow only GET requests
     if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
         http_response_code(405);
         echo json_encode(['error' => 'Only GET requests are allowed.']);
         exit;
     }
 
-    // Ensure the user_id parameter is provided
     if (!isset($_GET['user_id'])) {
         http_response_code(400);
         echo json_encode(['error' => 'Missing user_id parameter.']);
@@ -22,7 +20,6 @@ function getStudentLevelsDashboard() {
     $conn = connect_to_database();
 
     try {
-        // 1. Retrieve the chapters along with total levels & completed levels
         $sql = "
             SELECT 
                 c.chapter_id, 
@@ -44,7 +41,6 @@ function getStudentLevelsDashboard() {
         $stmt->execute(['user_id' => $user_id]);
         $chapters = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        // 2. For each chapter, fetch its levels (id + title or more)
         foreach ($chapters as &$chapter) {
             $chapterId = $chapter['chapter_id'];
 
@@ -57,12 +53,10 @@ function getStudentLevelsDashboard() {
             $stmt2->execute(['chapter_id' => $chapterId]);
             $levels = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 
-            // attach the levels array to the chapter
             $chapter['levels'] = $levels;
         }
-        unset($chapter); // good practice when referencing by &
+        unset($chapter); 
 
-        // 3. Return the combined result
         echo json_encode(['chapters' => $chapters]);
 
     } catch (PDOException $e) {

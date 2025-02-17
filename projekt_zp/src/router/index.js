@@ -64,8 +64,6 @@ const routes = [
     name: 'level-creator',
     component: () => import('../views/LevelCreatorView.vue')
   },
-
-  // NEW ROUTE FOR LEVEL EDITOR
   {
     path: '/level-editor/:level_id',
     name: 'level-editor',
@@ -78,11 +76,9 @@ const router = createRouter({
   routes,
 });
 
-// Global navigation guard to protect teacher and student routes
 router.beforeEach((to, from, next) => {
   const loginStore = useLoginStore();
 
-  // If route requires a teacher but the user isn't one...
   if (to.meta.requiresTeacher) {
     if (!loginStore.user_is_teacher) {
       next({ name: 'learn' });
@@ -90,7 +86,6 @@ router.beforeEach((to, from, next) => {
     }
   }
 
-  // If route requires a student but the user is a teacher...
   if (to.meta.requiresStudent) {
     if (loginStore.user_is_teacher) {
       next({ name: 'learn' });

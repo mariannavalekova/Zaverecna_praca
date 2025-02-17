@@ -20,8 +20,11 @@ function get_level_details_api() {
     $conn = connect_to_database();
 
     try {
-        // Fetch level data
-        $stmt = $conn->prepare("SELECT level_id, title, description FROM levels WHERE level_id = :level_id");
+        $stmt = $conn->prepare("
+            SELECT level_id, title, description, tangerine_count
+            FROM levels
+            WHERE level_id = :level_id
+        ");
         $stmt->execute(['level_id' => $level_id]);
         $level = $stmt->fetch(PDO::FETCH_ASSOC);
         if (!$level) {
@@ -30,10 +33,10 @@ function get_level_details_api() {
             exit;
         }
 
-        // Fetch obstacles for this level
+        // Obstacles
         $stmt2 = $conn->prepare("
-            SELECT obstacle_id, image_path, type, position_x, position_y 
-            FROM obstacles 
+            SELECT obstacle_id, image_path, type, position_x, position_y
+            FROM obstacles
             WHERE level_id = :level_id
         ");
         $stmt2->execute(['level_id' => $level_id]);
@@ -41,9 +44,10 @@ function get_level_details_api() {
 
         echo json_encode([
             'level' => [
-                'level_id'   => $level['level_id'],
-                'title'      => $level['title'],
-                'description'=> $level['description'],
+                'level_id' => $level['level_id'],
+                'title' => $level['title'],
+                'description' => $level['description'],
+                'tangerine_count' => (int) $level['tangerine_count'],
             ],
             'obstacles' => $obstacles
         ]);
@@ -54,4 +58,3 @@ function get_level_details_api() {
 }
 
 get_level_details_api();
-?>

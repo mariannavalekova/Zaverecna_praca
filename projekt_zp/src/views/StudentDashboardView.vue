@@ -28,8 +28,7 @@
     gap: 20px;
     padding: 20px;
   }
-  
-  /* Each section will take equal width if there is enough space */
+
   .dashboard-section {
     flex: 1;
     min-width: 300px;
@@ -39,8 +38,7 @@
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
-  
-  /* On smaller screens, stack the sections vertically */
+
   @media (max-width: 768px) {
     .dashboard-container {
       flex-direction: column;

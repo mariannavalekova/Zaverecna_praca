@@ -61,7 +61,7 @@
                   const response = await fetch('./Backend/admin_api/AdminLogoutAPI.php', {
                     method: 'POST',
                     headers: {
-                      'Authorization': `Bearer ${this.user.getToken()}`, // Include the JWT token in the header
+                      'Authorization': `Bearer ${this.user.getToken()}`, 
                       'Content-Type': 'application/json'
                     }
               });
@@ -70,8 +70,8 @@
                   throw new Error('Failed to logout');
               } 
   
-              this.user.clearToken(); // Clear the token from the store and local storage
-              this.router.push({ name: 'adminLogin' }); // Redirect to the login page
+              this.user.clearToken(); 
+              this.router.push({ name: 'adminLogin' }); 
   
             } catch (error) {
               console.error('Logout error:', error);

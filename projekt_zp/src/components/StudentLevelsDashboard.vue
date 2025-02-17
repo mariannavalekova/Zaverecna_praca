@@ -1,43 +1,37 @@
 <template>
   <div class="container mt-4">
     <h2>Levels Dashboard</h2>
-    
-    <!-- Display an error message if something goes wrong -->
+
     <div v-if="errorMessage" class="alert alert-danger">
       {{ errorMessage }}
     </div>
-    
-    <!-- If no chapters are available -->
+
     <div v-if="chapters.length === 0 && !errorMessage">
       <p>No chapters found.</p>
     </div>
-    
-    <!-- List the chapters -->
-    <div v-else>
-      <div
-        v-for="chapter in chapters"
-        :key="chapter.chapter_id"
-        class="card mb-3"
-      >
-        <div class="card-body">
-          <h5 class="card-title">
-            {{ chapter.title }}
-          </h5>
-          <p class="card-text">
-            Levels completed: {{ chapter.completed_levels }} / {{ chapter.total_levels }}
-          </p>
 
-          <!-- Show the list of levels in this chapter -->
-          <ul class="list-group">
-            <li
-              v-for="level in chapter.levels"
-              :key="level.level_id"
-              class="list-group-item list-group-item-action"
-              @click="goToLevel(level.level_id)"
-            >
-              {{ level.title }}
-            </li>
-          </ul>
+    <div v-else>
+      <div v-for="chapter in chapters" :key="chapter.chapter_id" class="card mb-3">
+        <div class="card-header clickable" @click="toggleChapter(chapter)">
+          <h5 class="card-title mb-0">{{ chapter.title }}</h5>
+          <small>
+            Levels completed: {{ chapter.completed_levels }} / {{ chapter.total_levels }}
+          </small>
+        </div>
+
+        <div v-if="chapter.expanded" class="card-body">
+          <div class="levels-container">
+            <ul class="list-group">
+              <li
+                v-for="level in chapter.levels"
+                :key="level.level_id"
+                class="list-group-item list-group-item-action"
+                @click.stop="goToLevel(level.level_id)"
+              >
+                {{ level.title }}
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -69,8 +63,10 @@ export default {
         if (data.error) {
           this.errorMessage = data.error;
         } else {
-          // We expect data.chapters to include "levels" for each chapter
-          this.chapters = data.chapters;
+          this.chapters = data.chapters.map(chapter => ({
+            ...chapter,
+            expanded: false,
+          }));
         }
       } catch (error) {
         console.error(error);
@@ -78,9 +74,10 @@ export default {
       }
     },
     goToLevel(levelId) {
-      // Navigate to the game view, passing level_id as a param
-      // Adjust the route name and param as needed
       this.$router.push({ name: "game", params: { level_id: levelId } });
+    },
+    toggleChapter(chapter) {
+      chapter.expanded = !chapter.expanded;
     },
   },
   mounted() {
@@ -99,11 +96,20 @@ export default {
   margin-bottom: 20px;
 }
 
-/* Make levels clickable */
+.card-header.clickable {
+  cursor: pointer;
+}
+
 .list-group-item-action {
   cursor: pointer;
 }
+
 .list-group-item-action:hover {
   background-color: #f0f0f0;
+}
+
+.levels-container {
+  max-height: 150px; 
+  overflow-y: auto;
 }
 </style>

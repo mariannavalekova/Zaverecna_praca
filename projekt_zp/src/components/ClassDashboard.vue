@@ -2,18 +2,15 @@
     <div class="container mt-4">
       <h2>Class Dashboard</h2>
       <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
-      
-      <!-- Button to create a new class -->
+
       <div class="mb-3">
         <button @click="createClass" class="btn btn-primary">Create Class</button>
       </div>
-      
-      <!-- Display a message if no classes are found -->
+
       <div v-if="classes.length === 0">
         <p>No classes found. Create one to get started.</p>
       </div>
-      
-      <!-- List of classes -->
+
       <div v-else>
         <div v-for="cls in classes" :key="cls.class_id" class="card mb-3">
           <div class="card-body">
@@ -36,8 +33,7 @@
           </div>
         </div>
       </div>
-      
-      <!-- Student Progress Modal -->
+
       <div class="modal fade" id="studentProgressModal" tabindex="-1" aria-labelledby="studentProgressModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
           <div class="modal-content">
@@ -75,7 +71,6 @@
   </template>
   
   <script>
-  // Import the login store and Bootstrap's modal functionality.
   import { useLoginStore } from '../stores/loginStore';
   import * as bootstrap from "bootstrap";
   
@@ -90,7 +85,6 @@
       };
     },
     methods: {
-      // Create a new class by calling the CreateClass API endpoint.
       async createClass() {
         const loginStore = useLoginStore();
         if (!loginStore.user_id) {
@@ -107,7 +101,6 @@
           if (data.error) {
             this.errorMessage = data.error;
           } else {
-            // Reload the classes to include the new one.
             this.loadClasses();
           }
         } catch (error) {
@@ -115,7 +108,6 @@
           this.errorMessage = 'An error occurred while creating the class.';
         }
       },
-      // Load all classes created by the teacher.
       async loadClasses() {
         const loginStore = useLoginStore();
         if (!loginStore.user_id) {
@@ -135,14 +127,12 @@
           this.errorMessage = 'An error occurred while loading classes.';
         }
       },
-      // When a student is clicked, load their progress and open the modal.
       async openStudentProgress(student) {
         this.selectedStudent = student;
         this.studentErrorMessage = '';
         this.studentProgress = [];
         
         try {
-          // Use the same API endpoint as StudentLevelsDashboard.vue.
           const response = await fetch(`./codebara-backend/level-api/GetStudentLevelsDashboardAPI.php?user_id=${student.user_id}`);
           const data = await response.json();
           if (data.error) {
@@ -155,12 +145,11 @@
           this.studentErrorMessage = 'An error occurred while loading student progress.';
         }
         
-        // Open the modal using Bootstrap's modal API.
         const modalEl = document.getElementById('studentProgressModal');
         const modal = new bootstrap.Modal(modalEl);
         modal.show();
       },
-      // Close the modal and clear the student progress data.
+
       closeStudentProgress() {
         const modalEl = document.getElementById('studentProgressModal');
         const modal = bootstrap.Modal.getInstance(modalEl);
@@ -186,7 +175,6 @@
     border: 1px solid #ccc;
   }
   
-  /* Style clickable student links */
   a {
     cursor: pointer;
     color: #007bff;

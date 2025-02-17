@@ -33,13 +33,13 @@ export default {
   background: #e9b160;
   padding: 15px;
   border-radius: 5px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Adds shadow for a clean look */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .chapter-item:hover {
-  transform: scale(1.02); /* Slight zoom on hover */
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); /* Darker shadow on hover */
+  transform: scale(1.02); 
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15); 
 }
 
 h1 {
@@ -51,6 +51,6 @@ h1 {
 }
 
 .chapter-item:hover h1 {
-  color: #d17c33; /* Matches the orange theme of your navbar */
+  color: #d17c33; 
 }
 </style>

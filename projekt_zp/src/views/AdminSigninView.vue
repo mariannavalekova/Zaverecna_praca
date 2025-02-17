@@ -4,7 +4,6 @@
         <div class="card w-50">
           <div class="card-body">
             <h5 class="card-title text-center">Admin Sign In</h5>
-            <!-- The LoginForm component emits a "logIn" event with email and password -->
             <Form @logIn="adminLogin" :errorMessage="errorMessage" />
           </div>
         </div>
@@ -31,7 +30,6 @@
         this.errorMessage = '';
   
         try {
-          // Use the admin-specific sign in endpoint.
           const response = await fetch('./codebara-backend/auth-api/AdminSigninAPI.php', {
             method: 'POST',
             headers: {
@@ -55,20 +53,17 @@
           const data = await response.json();
           const loginStore = useLoginStore();
           loginStore.setToken(data.access_token);
-          // Save user_id, user_is_admin, and user_is_teacher to the store and localStorage
           loginStore.setUserInfo(data.user_id, data.user_is_admin, data.user_is_teacher);
           console.log('Token:', loginStore.token);
           console.log('User ID:', loginStore.user_id);
           console.log('User is Admin:', loginStore.user_is_admin);
           console.log('User is Teacher:', loginStore.user_is_teacher);
-  
-          // Ensure the user is an admin before proceeding
+
           if (!data.user_is_admin) {
             this.errorMessage = 'Access denied. You are not an admin.';
             return;
           }
-  
-          // Redirect the admin to the admin panel
+
           this.$router.push('/admin-panel');
         } catch (error) {
           console.error('There was an error!', error);

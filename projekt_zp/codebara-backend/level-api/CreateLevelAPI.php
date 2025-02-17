@@ -5,7 +5,7 @@ function create_level_api() {
     header('Content-Type: application/json');
 
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        http_response_code(405); // Method Not Allowed
+        http_response_code(405); 
         echo json_encode(['error' => 'Only POST requests are allowed.']);
         exit;
     }
@@ -25,7 +25,7 @@ function create_level_api() {
         $stmt = $conn->prepare("INSERT INTO levels (title, chapter_id) VALUES (:title, :chapter_id)");
         $stmt->execute(['title' => $title, 'chapter_id' => $chapter_id]);
         $level_id = $conn->lastInsertId();
-        http_response_code(201); // Created
+        http_response_code(201); 
         echo json_encode([
             'success' => true,
             'level'   => [

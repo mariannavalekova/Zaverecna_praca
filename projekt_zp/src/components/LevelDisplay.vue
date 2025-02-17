@@ -33,13 +33,12 @@
             </tr>
           </tbody>
         </table>
-        <!-- Add Level Button for this chapter -->
+
         <button class="btn btn-success mt-2" @click="openAddModal(chapter)">
           Add Level
         </button>
       </div>
-  
-      <!-- Add Level Modal -->
+
       <div class="modal fade" id="addLevelModal" tabindex="-1" aria-labelledby="addLevelModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -79,14 +78,13 @@
   export default {
     data() {
       return {
-        chapters: [],        // Array of chapter objects; each may include a 'levels' array
+        chapters: [],        
         errorMessage: "",
         newLevelTitle: "",
-        selectedChapterId: null, // For adding a new level, store the chapter ID
+        selectedChapterId: null, 
       };
     },
     methods: {
-      // Load all chapters from the database
       async loadChapters() {
         try {
           const response = await fetch("/codebara-backend/chapter-api/GetChaptersAPI.php");
@@ -95,7 +93,7 @@
             this.errorMessage = data.error;
           } else {
             this.chapters = data.chapters;
-            // For each chapter, load its levels
+
             for (let chapter of this.chapters) {
               await this.loadLevelsForChapter(chapter);
             }
@@ -105,7 +103,7 @@
           this.errorMessage = "An error occurred while loading chapters.";
         }
       },
-      // Load levels for a given chapter using its chapter_id
+
       async loadLevelsForChapter(chapter) {
         try {
           const response = await fetch(`/codebara-backend/level-api/GetLevelsAPI.php?chapter_id=${chapter.chapter_id}`);
@@ -113,7 +111,6 @@
           if (data.error) {
             this.errorMessage = data.error;
           } else {
-            // Directly assign levels; Vue 3's reactivity will track this change.
             chapter.levels = data.levels;
           }
         } catch (error) {
@@ -149,7 +146,6 @@
           if (data.error) {
             this.errorMessage = data.error;
           } else {
-            // Reload levels for the affected chapter
             const chapter = this.chapters.find(ch => ch.chapter_id === this.selectedChapterId);
             if (chapter) {
               await this.loadLevelsForChapter(chapter);
@@ -162,8 +158,6 @@
         }
       },
       editLevel(level) {
-        // Redirect to LevelEditorView.vue with the level_id as parameter.
-        // Ensure you have a route named "level-editor" that accepts a level_id param.
         this.$router.push({ name: "level-editor", params: { level_id: level.level_id } });
       },
       async deleteLevel(chapterId, levelId) {
@@ -178,7 +172,6 @@
           if (data.error) {
             this.errorMessage = data.error;
           } else {
-            // Reload levels for the chapter
             const chapter = this.chapters.find(ch => ch.chapter_id === chapterId);
             if (chapter) {
               await this.loadLevelsForChapter(chapter);

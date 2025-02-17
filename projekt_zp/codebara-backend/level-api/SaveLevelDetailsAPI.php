@@ -17,41 +17,38 @@ function save_level_details_api() {
         exit;
     }
 
-    $level_id   = intval($data['level_id']);
-    $title      = trim($data['title']);
-    $description= trim($data['description']);
+    $level_id        = intval($data['level_id']);
+    $title           = trim($data['title']);
+    $description     = trim($data['description']);
+    $tangerine_count = isset($data['tangerine_count']) ? intval($data['tangerine_count']) : 0;
+
     $obstacles  = isset($data['obstacles']) ? $data['obstacles'] : [];
 
     $conn = connect_to_database();
     try {
-        // 1. Update the level's title & description
         $stmt = $conn->prepare("
             UPDATE levels
-            SET title = :title, description = :description
+            SET title = :title,
+                description = :description,
+                tangerine_count = :tangerine_count
             WHERE level_id = :level_id
         ");
         $stmt->execute([
-            'title'       => $title,
-            'description' => $description,
-            'level_id'    => $level_id
+            'title'           => $title,
+            'description'     => $description,
+            'tangerine_count' => $tangerine_count,
+            'level_id'        => $level_id
         ]);
 
-        // 2. Clear existing obstacles for this level
         $stmtDel = $conn->prepare("DELETE FROM obstacles WHERE level_id = :level_id");
         $stmtDel->execute(['level_id' => $level_id]);
 
-        // 3. Insert new obstacles
         $stmtObs = $conn->prepare("
             INSERT INTO obstacles (level_id, image_path, type, position_x, position_y)
             VALUES (:level_id, :image_path, :type, :position_x, :position_y)
         ");
         foreach ($obstacles as $obs) {
-            // Convert the full URL to a relative path
-            //  e.g. from "http://localhost:5173/src/assets/rock.jpg"
-            //  to   "src/assets/rock.jpg"
-            $parsedPath   = parse_url($obs['image_path'], PHP_URL_PATH);  // yields "/src/assets/rock.jpg"
-           
-
+            $parsedPath = parse_url($obs['image_path'], PHP_URL_PATH); 
             $stmtObs->execute([
                 'level_id'   => $level_id,
                 'image_path' => trim($parsedPath),
@@ -61,7 +58,7 @@ function save_level_details_api() {
             ]);
         }
 
-        echo json_encode(['success' => true, 'message' => 'Level and obstacles updated successfully.']);
+        echo json_encode(['success' => true, 'message' => 'Level updated successfully.']);
     } catch (PDOException $e) {
         http_response_code(500);
         echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);

@@ -5,14 +5,14 @@ function delete_chapter_api() {
     header('Content-Type: application/json');
 
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-        http_response_code(405); // Method Not Allowed
+        http_response_code(405); 
         echo json_encode(['error' => 'Only POST requests are allowed.']);
         exit;
     }
 
     $data = json_decode(file_get_contents('php://input'), true);
     if (!isset($data['chapter_id'])) {
-        http_response_code(400); // Bad Request
+        http_response_code(400); 
         echo json_encode(['error' => 'Missing chapter_id field.']);
         exit;
     }
@@ -25,7 +25,7 @@ function delete_chapter_api() {
         $stmt->execute(['chapter_id' => $chapter_id]);
         echo json_encode(['success' => true, 'message' => 'Chapter deleted successfully.']);
     } catch (PDOException $e) {
-        http_response_code(500); // Internal Server Error
+        http_response_code(500); 
         echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
     }
 }

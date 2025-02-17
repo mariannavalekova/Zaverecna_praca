@@ -74,7 +74,7 @@
   
   .practice-button:hover {
   background-color: #b7692b;
-  transform: scale(1.05); /* Slight zoom on hover */
+  transform: scale(1.05); 
 }
 .practice-button {
   margin-top: 20px;
@@ -90,7 +90,7 @@
 }
 
 .practice-button:active {
-  transform: scale(1); /* Reset zoom on click */
+  transform: scale(1); 
 }
   .section {
     margin-bottom: 30px;

@@ -26,7 +26,7 @@ export default {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-color: #f5f4eb; /* Light beige background */
+  background-color: #f5f4eb; 
   margin: 0;
   padding: 0;
   box-sizing: border-box;

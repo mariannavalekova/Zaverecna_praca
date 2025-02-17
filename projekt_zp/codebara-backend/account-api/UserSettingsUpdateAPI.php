@@ -47,6 +47,5 @@ function updateUserSettings() {
     }
 }
 
-// Call the function to process the request.
 updateUserSettings();
 ?>

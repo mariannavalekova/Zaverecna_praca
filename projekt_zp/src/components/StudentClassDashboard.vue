@@ -1,8 +1,7 @@
 <template>
     <div class="container mt-4">
       <h2>Student Class Dashboard</h2>
-      
-      <!-- Form to join a class -->
+
       <div class="join-class-form mb-4">
         <label for="classCode">Enter Class Code:</label>
         <input
@@ -14,12 +13,10 @@
         />
         <button class="btn btn-primary mt-2" @click="joinClass">Join Class</button>
       </div>
-      
-      <!-- Display messages -->
+
       <div v-if="errorMessage" class="alert alert-danger">{{ errorMessage }}</div>
       <div v-if="successMessage" class="alert alert-success">{{ successMessage }}</div>
-      
-      <!-- Display the joined classes -->
+
       <div v-if="classes.length">
         <h3>Your Joined Classes</h3>
         <div v-for="cls in classes" :key="cls.class_id" class="card mb-3">
@@ -58,7 +55,6 @@
     },
     methods: {
       async joinClass() {
-        // Clear previous messages
         this.errorMessage = '';
         this.successMessage = '';
         
@@ -67,8 +63,7 @@
           this.errorMessage = 'You must be logged in.';
           return;
         }
-        
-        // Validate the class code length (should be 10 characters)
+
         if (!this.classCode || this.classCode.length !== 10) {
           this.errorMessage = 'Class code must be exactly 10 characters long.';
           return;
@@ -89,7 +84,6 @@
           } else {
             this.successMessage = 'Successfully joined the class.';
             this.classCode = '';
-            // Refresh the list of joined classes
             this.loadJoinedClasses();
           }
         } catch (error) {
