@@ -23,6 +23,23 @@ $level_id = intval($data['level_id']);
 $conn = connect_to_database();
 
 try {
+    $checkStmt = $conn->prepare("
+        SELECT 1
+        FROM completed_levels
+        WHERE user_id = :user_id AND level_id = :level_id
+    ");
+    $checkStmt->execute([
+        'user_id' => $user_id,
+        'level_id' => $level_id
+    ]);
+
+    if ($checkStmt->fetch()) {
+        echo json_encode([
+            'success' => true,
+            'message' => 'User already completed this level.'
+        ]);
+        exit;  
+    }
     $stmt = $conn->prepare("
         INSERT INTO completed_levels (user_id, level_id, date)
         VALUES (:user_id, :level_id, NOW())
@@ -31,11 +48,14 @@ try {
         'user_id' => $user_id,
         'level_id' => $level_id
     ]);
+
     echo json_encode([
         'success' => true,
         'message' => 'Level marked as completed.'
     ]);
+    
 } catch (PDOException $e) {
     http_response_code(500);
     echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
 }
+

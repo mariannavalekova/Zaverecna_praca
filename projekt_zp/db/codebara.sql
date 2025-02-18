@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hostiteľ: 127.0.0.1:3307
--- Čas generovania: Po 17.Feb 2025, 16:40
+-- Čas generovania: Út 18.Feb 2025, 14:08
 -- Verzia serveru: 10.4.32-MariaDB
 -- Verzia PHP: 8.2.12
 
@@ -94,6 +94,8 @@ CREATE TABLE `completed_levels` (
 --
 
 INSERT INTO `completed_levels` (`user_id`, `level_id`, `date`) VALUES
+(6, 2, '2025-02-18 12:59:11'),
+(6, 3, '2025-02-18 12:01:18'),
 (7, 3, '2025-02-17 16:38:29');
 
 -- --------------------------------------------------------
@@ -107,16 +109,17 @@ CREATE TABLE `levels` (
   `title` varchar(45) NOT NULL,
   `chapter_id` int(11) NOT NULL,
   `description` mediumtext DEFAULT NULL,
-  `tangerine_count` int(11) DEFAULT NULL
+  `tangerine_count` int(11) DEFAULT NULL,
+  `level_hint` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Sťahujem dáta pre tabuľku `levels`
 --
 
-INSERT INTO `levels` (`level_id`, `title`, `chapter_id`, `description`, `tangerine_count`) VALUES
-(2, 'Level1', 2, 'levelino', NULL),
-(3, 'for loop', 3, 'Collect 2 tangerinos', 2);
+INSERT INTO `levels` (`level_id`, `title`, `chapter_id`, `description`, `tangerine_count`, `level_hint`) VALUES
+(2, 'Level1', 2, 'levelino', NULL, NULL),
+(3, 'for loop', 3, 'Collect 2 tangerinos', 2, 'Methods needed: moveRight(), moveDown(), collect()');
 
 -- --------------------------------------------------------
 
@@ -144,10 +147,10 @@ INSERT INTO `obstacles` (`obstacle_id`, `level_id`, `image_path`, `type`, `posit
 (34, 2, '/src/assets/tangerine.png', 'tangerine', 427, 265),
 (35, 2, '/src/assets/tangerine.png', 'tangerine', 366, 125),
 (36, 2, '/src/assets/finish.png', 'finish', 168, 175),
-(52, 3, '/src/assets/tangerine.png', 'tangerine', 299, 250),
-(53, 3, '/src/assets/rock.jpg', 'rock', 507, 469),
-(54, 3, '/src/assets/finish.png', 'finish', 304, 398),
-(55, 3, '/src/assets/tangerine.png', 'tangerine', 300, 103);
+(83, 3, '/src/assets/rock.jpg', 'rock', 507, 469),
+(84, 3, '/src/assets/finish.png', 'finish', 304, 398),
+(85, 3, '/src/assets/tangerine.png', 'tangerine', 300, 103),
+(86, 3, '/src/assets/tangerine.png', 'tangerine', 300, 236);
 
 -- --------------------------------------------------------
 
@@ -255,7 +258,7 @@ ALTER TABLE `levels`
 -- AUTO_INCREMENT pre tabuľku `obstacles`
 --
 ALTER TABLE `obstacles`
-  MODIFY `obstacle_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `obstacle_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
 
 --
 -- AUTO_INCREMENT pre tabuľku `users`

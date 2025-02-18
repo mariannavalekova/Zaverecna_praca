@@ -27,39 +27,47 @@
       <div class="input-container">
         <ErrorDisplayView :errorMessage="errorMessage" />
         <CodeInputView @executeCode="executeUserCode" />
+        <CapyConsole :messages="capyMessages" />
       </div>
     </div>
+
+    <LevelHint v-if="level" :hint="level.level_hint" />
   </div>
 </template>
 
 <script>
 import { executePythonAsync } from "@/services/skulptRunner";
 import { addCapyToSkulpt } from "@/services/capy";
-
 import VisualizationView from "@/components/Visualization.vue";
 import ErrorDisplayView from "@/components/ErrorDisplay.vue";
 import CodeInputView from "@/components/CodeInput.vue";
+import CapyConsole from "@/components/CapyConsole.vue";
+import LevelHint from "@/components/LevelHint.vue"; 
 
 import { useLoginStore } from "@/stores/loginStore"; 
 
 export default {
+  name: "GameView",
   components: {
     VisualizationView,
     ErrorDisplayView,
     CodeInputView,
+    CapyConsole,
+    LevelHint, 
   },
   data() {
     return {
       heroPosition: { x: 100, y: 100 },
       heroImage: "/src/assets/idle.gif",
       errorMessage: "",
-      level: null,             
+      level: null, 
       obstacles: [],
-      originalObstacles: [],   
+      originalObstacles: [],
       tangerinesCollected: 0,
-      visualizationKey: 0,     
+      visualizationKey: 0,
 
       userId: null,
+      capyMessages: [],
     };
   },
   methods: {
@@ -67,12 +75,15 @@ export default {
       const startX = this.heroPosition.x;
       const startY = this.heroPosition.y;
       const startTime = performance.now();
+
       const animate = (currentTime) => {
         const elapsed = currentTime - startTime;
         const fraction = Math.min(elapsed / duration, 1);
+
         const currentX = startX + (newX - startX) * fraction;
         const currentY = startY + (newY - startY) * fraction;
         this.heroPosition = { x: currentX, y: currentY };
+
         if (fraction < 1) {
           requestAnimationFrame(animate);
         }
@@ -80,7 +91,7 @@ export default {
       requestAnimationFrame(animate);
     },
 
-    updateHeroAnimation(animation) {
+    updateHeroAnimation(animationKey) {
       const animations = {
         idle: "/src/assets/idle.gif",
         moveu: "/src/assets/moveu.gif",
@@ -92,7 +103,7 @@ export default {
         hide: "/src/assets/hide.gif",
         eat: "/src/assets/eat.gif",
       };
-      this.heroImage = animations[animation] || "/src/assets/idle.gif";
+      this.heroImage = animations[animationKey] || "/src/assets/idle.gif";
     },
 
     resetCapy() {
@@ -105,18 +116,20 @@ export default {
         this.errorMessage = "No code to execute. Please write some code.";
         return;
       }
+
       this.resetCapy();
       this.tangerinesCollected = 0;
       this.obstacles = JSON.parse(JSON.stringify(this.originalObstacles));
       this.visualizationKey++;
-
       this.errorMessage = "";
+      this.capyMessages = [];
+
       try {
         addCapyToSkulpt(this);
         const result = await executePythonAsync(
           userCode,
-          (result) => {
-            console.log("Execution completed.", result);
+          (res) => {
+            console.log("Execution completed.", res);
           },
           (err) => {
             console.error(err.toString());
@@ -140,10 +153,8 @@ export default {
           this.errorMessage = data.error;
           return;
         }
-
         this.level = data.level; 
         this.obstacles = data.obstacles || [];
-
         this.originalObstacles = JSON.parse(
           JSON.stringify(data.obstacles || [])
         );
@@ -162,18 +173,14 @@ export default {
       }
 
       try {
-        const response = await fetch(
-          "/codebara-backend/level-api/CompleteLevelAPI.php",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              user_id: this.userId,            
-              level_id: this.level.level_id,
-            }),
-          }
-        );
-
+        const response = await fetch("/codebara-backend/level-api/CompleteLevelAPI.php", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            user_id: this.userId,
+            level_id: this.level.level_id,
+          }),
+        });
         const data = await response.json();
         if (data.success) {
           alert("Level Completed!");
@@ -188,7 +195,6 @@ export default {
       }
     },
   },
-
   mounted() {
     const loginStore = useLoginStore();
     this.userId = Number(loginStore.user_id) || null;
@@ -227,6 +233,15 @@ export default {
   font-weight: bold;
 }
 
+.game-container {
+  width: 80%;
+  max-width: 1400px;
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
 .visualization-container {
   width: 500px;
   height: 500px;
@@ -242,55 +257,35 @@ export default {
 }
 
 .input-container {
-  width: 50%;
+  flex: 1;
   min-width: 300px;
-  max-width: 500px;
-  height: 500px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   padding: 10px;
   box-sizing: border-box;
+  height: 500px;
 }
 
-.game-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  min-width: 500px;
-  flex-wrap: nowrap;
-  overflow: hidden;
-}
-
-@media screen and (max-width: 900px) {
-  .game-container {
-    flex-direction: column;
-    align-items: center;
-  }
-  .visualization-container {
-    width: 500px;
-    height: 500px;
-    min-width: 500px;
-    min-height: 500px;
-    overflow: visible;
-  }
-  .input-container {
-    width: 90%;
-    max-width: 500px;
-    height: 500px;
-  }
+.input-container textarea {
+  height: 250px !important;
+  max-height: 250px;
 }
 
 .error-display {
   margin-bottom: 10px;
 }
 
-textarea {
-  flex-grow: 1;
-  resize: none;
-  width: 100%;
-  height: 100%;
-  margin-top: 10px;
+
+@media screen and (max-width: 900px) {
+  .game-container {
+    flex-direction: column;
+    width: 90%;
+  }
+  .visualization-container,
+  .input-container {
+    width: 100%;
+    height: auto;
+    margin-bottom: 20px;
+  }
 }
 </style>

@@ -21,8 +21,9 @@ function save_level_details_api() {
     $title           = trim($data['title']);
     $description     = trim($data['description']);
     $tangerine_count = isset($data['tangerine_count']) ? intval($data['tangerine_count']) : 0;
+    $level_hint      = isset($data['level_hint']) ? trim($data['level_hint']) : "";
 
-    $obstacles  = isset($data['obstacles']) ? $data['obstacles'] : [];
+    $obstacles = isset($data['obstacles']) ? $data['obstacles'] : [];
 
     $conn = connect_to_database();
     try {
@@ -30,13 +31,15 @@ function save_level_details_api() {
             UPDATE levels
             SET title = :title,
                 description = :description,
-                tangerine_count = :tangerine_count
+                tangerine_count = :tangerine_count,
+                level_hint = :level_hint
             WHERE level_id = :level_id
         ");
         $stmt->execute([
             'title'           => $title,
             'description'     => $description,
             'tangerine_count' => $tangerine_count,
+            'level_hint'      => $level_hint,
             'level_id'        => $level_id
         ]);
 
@@ -48,7 +51,7 @@ function save_level_details_api() {
             VALUES (:level_id, :image_path, :type, :position_x, :position_y)
         ");
         foreach ($obstacles as $obs) {
-            $parsedPath = parse_url($obs['image_path'], PHP_URL_PATH); 
+            $parsedPath = parse_url($obs['image_path'], PHP_URL_PATH);
             $stmtObs->execute([
                 'level_id'   => $level_id,
                 'image_path' => trim($parsedPath),

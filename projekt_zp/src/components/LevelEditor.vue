@@ -35,6 +35,16 @@
       />
     </div>
 
+    <div class="mb-3">
+      <label for="levelHint" class="form-label">Level Hint</label>
+      <textarea
+        class="form-control"
+        id="levelHint"
+        rows="2"
+        v-model="form.level_hint"
+      ></textarea>
+    </div>
+
     <div class="obstacle-toolbar">
       <h5>Place Obstacles:</h5>
       <button
@@ -140,6 +150,7 @@ export default {
         title: "",
         description: "",
         tangerine_count: 0,
+        level_hint: "",
       },
       backgroundSrc: "/src/assets/rb_1308.png",
       backgroundImage: null,
@@ -167,7 +178,6 @@ export default {
       stageHeight: 500,
       errorMessage: "",
       successMessage: "",
-
       isDeletionMode: false,
     };
   },
@@ -186,6 +196,9 @@ export default {
         this.form.description = data.level.description;
         if (data.level.tangerine_count !== undefined) {
           this.form.tangerine_count = data.level.tangerine_count;
+        }
+        if (data.level.level_hint !== undefined) {
+          this.form.level_hint = data.level.level_hint;
         }
 
         if (data.obstacles && Array.isArray(data.obstacles)) {
@@ -235,7 +248,6 @@ export default {
       obstacle.x = shape.x();
       obstacle.y = shape.y();
     },
-
     onObstacleClick(obs) {
       if (this.isDeletionMode) {
         const index = this.obstacles.indexOf(obs);
@@ -261,6 +273,7 @@ export default {
           title: this.form.title,
           description: this.form.description,
           tangerine_count: this.form.tangerine_count,
+          level_hint: this.form.level_hint,
           obstacles: obstaclesData,
         };
         const response = await fetch("/codebara-backend/level-api/SaveLevelDetailsAPI.php", {
@@ -268,9 +281,9 @@ export default {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         });
-        const data = await response.json();
-        if (data.error) {
-          this.errorMessage = data.error;
+        const result = await response.json();
+        if (result.error) {
+          this.errorMessage = result.error;
           return;
         }
         this.successMessage = "Changes saved successfully!";
@@ -288,6 +301,7 @@ export default {
       this.form.title = this.originalData?.level?.title || "";
       this.form.description = this.originalData?.level?.description || "";
       this.form.tangerine_count = this.originalData?.level?.tangerine_count || 0;
+      this.form.level_hint = this.originalData?.level?.level_hint || "";
 
       this.obstacles = [];
       if (this.originalData?.obstacles) {
@@ -354,9 +368,5 @@ export default {
   height: 24px;
   margin-right: 4px;
   object-fit: contain;
-}
-
-.konva-stage :deep(.obstacle-delete) {
-  outline: 2px solid red;
 }
 </style>

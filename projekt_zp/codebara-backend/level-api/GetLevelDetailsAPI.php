@@ -21,7 +21,7 @@ function get_level_details_api() {
 
     try {
         $stmt = $conn->prepare("
-            SELECT level_id, title, description, tangerine_count
+            SELECT level_id, title, description, tangerine_count, level_hint
             FROM levels
             WHERE level_id = :level_id
         ");
@@ -33,7 +33,6 @@ function get_level_details_api() {
             exit;
         }
 
-        // Obstacles
         $stmt2 = $conn->prepare("
             SELECT obstacle_id, image_path, type, position_x, position_y
             FROM obstacles
@@ -44,10 +43,11 @@ function get_level_details_api() {
 
         echo json_encode([
             'level' => [
-                'level_id' => $level['level_id'],
-                'title' => $level['title'],
-                'description' => $level['description'],
+                'level_id'        => $level['level_id'],
+                'title'           => $level['title'],
+                'description'     => $level['description'],
                 'tangerine_count' => (int) $level['tangerine_count'],
+                'level_hint'      => $level['level_hint'] ?? "",
             ],
             'obstacles' => $obstacles
         ]);

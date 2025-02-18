@@ -193,13 +193,22 @@ export function addCapyToSkulpt(vueInstance) {
       );
     });
 
-    $loc.say = new Sk.builtin.func(function (self, message) {
-      message = Sk.ffi.remapToJs(message);
-      console.log(`Capy says: "${message}"`);
-      return Sk.misceval.promiseToSuspension(
-        sleep(1000).then(() => Sk.builtin.none.none$)
-      );
-    });
+
+$loc.say = new Sk.builtin.func(function (self, message) {
+  message = Sk.ffi.remapToJs(message);
+
+  if (!vueInstance.capyMessages) {
+    vueInstance.capyMessages = [];
+  }
+  vueInstance.capyMessages.push(message);
+
+  console.log(`Capy says: "${message}"`);
+
+  return Sk.misceval.promiseToSuspension(
+    sleep(1000).then(() => Sk.builtin.none.none$)
+  );
+});
+
   };
 
   Sk.builtin.Capy = Sk.misceval.buildClass(Sk.builtins, Capy, "Capy", []);
