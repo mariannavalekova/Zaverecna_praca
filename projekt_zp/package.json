@@ -9,14 +9,18 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-vue": "^7.3.0",
+    "@highlightjs/vue-plugin": "^2.1.0",
     "bootstrap": "^5.3.3",
-    "fabric": "^6.5.4",
+    "ckeditor5": "^44.2.1",
+    "highlight.js": "^11.11.1",
     "konva": "^9.3.18",
     "pinia": "^2.2.4",
     "skulpt": "^1.2.0",
     "vue": "^3.5.12",
     "vue-konva": "^3.2.0",
-    "vue-router": "^4.4.5"
+    "vue-router": "^4.4.5",
+    "vue3-highlightjs": "^1.0.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.1",
