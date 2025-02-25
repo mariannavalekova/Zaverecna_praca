@@ -3,6 +3,11 @@ import { useLoginStore } from '@/stores/loginStore';
 
 const routes = [
   {
+    path: '/',
+    name: 'home',
+    component: () => import('../views/HomeView.vue')
+  },
+  {
     path: '/learn',
     name: 'learn',
     component: () => import('../views/LearnView.vue')
@@ -69,6 +74,11 @@ const routes = [
     name: 'level-editor',
     component: () => import('../views/LevelEditorView.vue')
   },
+  {
+    path: '/article-creator',
+    name: 'article-creator',
+    component: () => import('../views/ArticleCreatorView.vue')
+  }
 ];
 
 const router = createRouter({

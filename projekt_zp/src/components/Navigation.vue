@@ -1,7 +1,7 @@
 <template>
   <div class="navbar">
     <div class="left-section">
-      <router-link :to="homeRoute" class="logo">
+      <router-link to="/" class="logo">
         <img src="@/assets/logo.png" alt="Code bara logo" class="logo-image" />
       </router-link>
       <div class="menu">
@@ -30,9 +30,13 @@ export default {
 
     const isUserLoggedIn = computed(() => loginStore.userAuthorised);
     const isTeacher = computed(() => loginStore.user_is_teacher);
-    const homeRoute = computed(() =>
-      isTeacher.value ? '/teacher-dashboard' : '/student-dashboard'
-    );
+    
+    const homeRoute = computed(() => {
+      if (!loginStore.userAuthorised) {
+        return '/';
+      }
+      return isTeacher.value ? '/teacher-dashboard' : '/student-dashboard';
+    });
 
     const logout = () => {
       loginStore.clearToken();
@@ -50,50 +54,48 @@ export default {
 
 <style scoped>
 .navbar {
-  background: #d17c33; 
+  background: #d17c33;
   width: 100%;
-  height: 60px; 
   display: flex;
-  align-items: center;
+  align-items: flex-end; 
   justify-content: space-between;
-  padding: 0 20px; 
+  padding: 3 3vh;
   box-sizing: border-box;
 }
 
 .left-section {
   display: flex;
-  align-items: center;
-  gap: 40px; 
+  align-items: flex-end; 
+  padding-left: 1vh;
 }
 
 .logo-image {
-  height: 60px; 
-  width: auto; 
+  height: 40px; 
+  width: auto;
 }
 
 .menu {
   display: flex;
-  gap: 30px; 
 }
 
 .auth {
   display: flex;
-  gap: 20px; 
+  padding-right: 2vh;
 }
 
 .menu-item {
-  color: #38210d; 
-  font-family: "Jaro-Regular", sans-serif;
-  font-size: 24px; 
+  color: #38210d;
+  font-family: "Berlin Sans FB", sans-serif;
+  font-size: 24px;
   font-weight: 400;
   text-decoration: none;
   cursor: pointer;
   background: none;
   border: none;
-  padding: 0;
+  padding: 0 1vh;
 }
 
 .menu-item:hover {
-  text-decoration: underline; 
+  text-decoration: underline;
 }
 </style>

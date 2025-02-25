@@ -152,23 +152,23 @@ export default {
         tangerine_count: 0,
         level_hint: "",
       },
-      backgroundSrc: "/src/assets/rb_1308.png",
+      backgroundSrc: "/src/assets/level_assets/editor_grid.png",
       backgroundImage: null,
 
       obstacleItems: [
         {
           label: "Rock",
-          image_path: "/src/assets/rock.jpg",
+          image_path: "/src/assets/level_assets/rock.jpg",
           type: "rock",
         },
         {
           label: "Tangerine",
-          image_path: "/src/assets/tangerine.png",
+          image_path: "/src/assets/level_assets/tangerine.png",
           type: "tangerine",
         },
         {
           label: "Finish",
-          image_path: "/src/assets/finish.png",
+          image_path: "/src/assets/level_assets/finish.png",
           type: "finish",
         },
       ],

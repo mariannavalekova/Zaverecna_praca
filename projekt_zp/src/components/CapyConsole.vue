@@ -3,7 +3,7 @@
       <div class="capy-console-image-wrap">
         <img 
           class="capy-console-image" 
-          src="@/assets/tangerine.png" 
+          src="@/assets/capy_head.png" 
           alt="Capy"
         />
       </div>

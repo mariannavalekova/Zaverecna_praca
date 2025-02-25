@@ -1,12 +1,7 @@
 <template>
   <main>
-    <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
-      <div class="card w-50">
-        <div class="card-body">
-          <h5 class="card-title text-center">Prihlásiť sa</h5>
+    <div >
           <Form @logIn="userLogin" :errorMessage="errorMessage"></Form>
-        </div>
-      </div>
     </div>
   </main>
 </template>

@@ -42,7 +42,7 @@ export default {
   position: relative;
   width: 500px;
   height: 500px;
-  background-image: url("/src/assets/rb_1308.png");
+  background-image: url("/src/assets/level_assets/level_grid.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
