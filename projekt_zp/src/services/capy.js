@@ -6,8 +6,8 @@ export function addCapyToSkulpt(vueInstance) {
   function collides(heroX, heroY, obs) {
     const heroWidth = 100,
       heroHeight = 100;
-    const obsWidth = 80,
-      obsHeight = 80;
+    const obsWidth = 50,
+      obsHeight = 50;
     return (
       heroX < obs.position_x + obsWidth &&
       heroX + heroWidth > obs.position_x &&
@@ -18,7 +18,7 @@ export function addCapyToSkulpt(vueInstance) {
 
   const Capy = function ($gbl, $loc) {
     $loc.__init__ = new Sk.builtin.func(function (self) {
-      self.position = { x: 100, y: 100 };
+      self.position = { x: 50, y: 50 };
       return Sk.builtin.none.none$;
     });
 
@@ -31,7 +31,7 @@ export function addCapyToSkulpt(vueInstance) {
       }
 
       vueInstance.updateHeroAnimation("mover");
-      const deltaX = 20 * steps;
+      const deltaX = 50 * steps;
       const newX = self.position.x + deltaX;
 
       const rockCollision = vueInstance.obstacles.some(
@@ -68,7 +68,7 @@ export function addCapyToSkulpt(vueInstance) {
       }
 
       vueInstance.updateHeroAnimation("movel");
-      const deltaX = -20 * steps;
+      const deltaX = -50 * steps;
       const newX = self.position.x + deltaX;
 
       const rockCollision = vueInstance.obstacles.some(
@@ -105,7 +105,7 @@ export function addCapyToSkulpt(vueInstance) {
       }
 
       vueInstance.updateHeroAnimation("moveu");
-      const deltaY = -20 * steps;
+      const deltaY = -50 * steps;
       const newY = self.position.y + deltaY;
 
       const rockCollision = vueInstance.obstacles.some(
@@ -142,7 +142,7 @@ export function addCapyToSkulpt(vueInstance) {
       }
 
       vueInstance.updateHeroAnimation("moved");
-      const deltaY = 20 * steps;
+      const deltaY = 50 * steps;
       const newY = self.position.y + deltaY;
 
       const rockCollision = vueInstance.obstacles.some(

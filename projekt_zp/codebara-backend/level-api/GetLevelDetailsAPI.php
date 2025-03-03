@@ -47,7 +47,7 @@ function get_level_details_api() {
                 'title'           => $level['title'],
                 'description'     => $level['description'],
                 'tangerine_count' => (int) $level['tangerine_count'],
-                'level_hint'      => $level['level_hint'] ?? "",
+                'level_hint'      => $level['level_hint'] ?? "", 
             ],
             'obstacles' => $obstacles
         ]);

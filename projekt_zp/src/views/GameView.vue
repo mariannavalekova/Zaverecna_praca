@@ -57,7 +57,7 @@ export default {
   },
   data() {
     return {
-      heroPosition: { x: 100, y: 100 },
+      heroPosition: { x: 50, y: 50 },
       heroImage: "/src/assets/idle.gif",
       errorMessage: "",
       level: null, 
@@ -107,7 +107,7 @@ export default {
     },
 
     resetCapy() {
-      this.heroPosition = { x: 100, y: 100 };
+      this.heroPosition = { x: 50, y: 50 };
       this.heroImage = "/src/assets/idle.gif";
     },
 
@@ -136,7 +136,7 @@ export default {
             this.errorMessage = err.toString();
           }
         );
-        console.log("Python execution result:", result);
+        //console.log("Python execution result:", result);
       } catch (error) {
         this.errorMessage = error.message || error.toString();
         console.error("Execution error:", error);
