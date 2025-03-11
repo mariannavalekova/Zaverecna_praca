@@ -19,13 +19,10 @@
 
     <div v-if="classes.length">
       <h3 class="joined-title">Your Joined Classes</h3>
-      <div
-        v-for="cls in classes"
-        :key="cls.class_id"
-        class="class-card"
-      >
+      <div v-for="cls in classes" :key="cls.class_id" class="class-card">
         <div class="class-header">
           <h5 class="class-code">Class Code: {{ cls.class_code }}</h5>
+          
           <button 
             @click="cls.showStudents = !cls.showStudents" 
             class="students-btn"
@@ -33,8 +30,9 @@
             Students
           </button>
         </div>
-
-        <!-- Slide-fade transition for the student list -->
+        <p class="teacher-info">
+          Teacher: {{ cls.teacher_name }} {{ cls.teacher_surname }}
+          </p>
         <transition name="slide-fade">
           <div v-if="cls.showStudents" class="students-section">
             <h6>Students:</h6>
@@ -121,7 +119,6 @@ export default {
         if (data.error) {
           this.errorMessage = data.error;
         } else {
-          // Add a showStudents property to each class to enable toggling
           this.classes = data.classes.map(cls => ({ 
             ...cls, 
             showStudents: false 
@@ -140,18 +137,18 @@ export default {
 </script>
 
 <style scoped>
-/* Container styling similar to ClassDashboard */
+
 .student-class-dashboard-container {
   max-width: 600px;
   margin: 20px auto;
-  background-color: #fbe2cd; /* Light peach background */
+  background-color: #fbe2cd; 
   padding: 20px;
   border-radius: 8px;
   border: 1px solid #f3c9a6;
   font-family: Arial, sans-serif;
 }
 
-/* Page title styling */
+
 .page-title {
   margin-bottom: 20px;
   text-align: center;
@@ -159,24 +156,21 @@ export default {
   color: #5a3f2a;
 }
 
-/* Alert messages keep default Bootstrap styling, but you can customize if you like */
 .alert {
   margin-bottom: 15px;
 }
 
-/* Section for joining a class, with everything on one row */
 .join-class-section {
   display: flex;
-  align-items: center; /* vertically center label, input, and button */
+  align-items: center;
   gap: 10px;
   margin-bottom: 20px;
   color: #5a3f2a;
 }
 .join-class-label {
-  white-space: nowrap; /* prevent label from wrapping */
+  white-space: nowrap;
 }
 
-/* Input for class code */
 .join-class-input {
   flex: 1;
   padding: 8px;
@@ -185,7 +179,6 @@ export default {
   background-color: #fff;
 }
 
-/* "Join Class" button styled similarly to create-class-btn in ClassDashboard */
 .join-class-btn {
   background-color: #d17c33; 
   color: #fff;
@@ -200,14 +193,12 @@ export default {
   background-color: #b97c51;
 }
 
-/* Title for "Your Joined Classes" */
 .joined-title {
   margin-top: 30px;
   margin-bottom: 15px;
   color: #5a3f2a;
 }
 
-/* Individual class card */
 .class-card {
   background-color: #f5d0ae;
   border: 1px solid #e8b995;
@@ -216,7 +207,6 @@ export default {
   margin-bottom: 15px;
 }
 
-/* Class header part (where Class Code + Students button is) */
 .class-header {
   display: flex;
   justify-content: space-between;
@@ -224,14 +214,18 @@ export default {
   margin-bottom: 10px;
 }
 
-/* Class code text */
 .class-code {
   font-weight: bold;
   color: #5a3f2a;
   margin: 0;
 }
 
-/* Students button on each card */
+.teacher-info {
+  font-style: italic;
+  margin: 0 0 10px 0;
+  color: #5a3f2a;
+}
+
 .students-btn {
   background-color: #d17c33; 
   color: #fff;
@@ -245,7 +239,6 @@ export default {
   background-color: #b97c51;
 }
 
-/* The students section that slides down */
 .students-section {
   margin-top: 15px;
   background-color: #f6e3d3;
@@ -254,7 +247,6 @@ export default {
   color: #5a3f2a;
 }
 
-/* Basic styling for lists */
 .students-list {
   list-style: disc;
   padding-left: 20px;
@@ -264,7 +256,6 @@ export default {
   margin-bottom: 4px;
 }
 
-/* Transition for showing/hiding student list */
 .slide-fade-enter-active, .slide-fade-leave-active {
   transition: all .3s ease;
 }
@@ -273,13 +264,12 @@ export default {
   transform: translateY(-5px);
 }
 
-/* If you wrap student names in <a> tags in the future, remove the default link color: */
 .students-list a {
-  color: #5a3f2a;          /* Match your theme color */
-  text-decoration: none;  /* No underline by default */
+  color: #5a3f2a;
+  text-decoration: none;
 }
 .students-list a:hover {
   text-decoration: underline;
-  color: #b97c51;          
+  color: #b97c51;
 }
 </style>

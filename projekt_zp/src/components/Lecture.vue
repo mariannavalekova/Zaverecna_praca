@@ -86,7 +86,7 @@ export default {
 .learn {
   display: flex;
   background-color: #f5f4eb;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .sidebar {

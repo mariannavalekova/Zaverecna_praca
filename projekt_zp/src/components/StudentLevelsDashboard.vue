@@ -33,6 +33,7 @@
                   @click.stop="goToLevel(level.level_id)"
                 >
                   {{ level.title }}
+                  <span v-if="level.completed" class="checkmark">✓</span>
                 </li>
               </ul>
             </div>
@@ -152,7 +153,6 @@ export default {
 .levels-container {
   max-height: 150px;
   overflow-y: auto;
-  background-color: #fff;
   border-radius: 4px;
   border: 1px solid #e8b995;
   padding: 10px;
@@ -168,10 +168,19 @@ export default {
   cursor: pointer;
   padding: 5px;
   border-bottom: 1px solid #e8b995;
+  display: flex;
+  align-items: center;
 }
 
 .levels-container li:hover {
   background-color: #f0f0f0;
+}
+
+/* Checkmark styling for completed levels */
+.checkmark {
+  color: green;
+  margin-left: 5px;
+  font-weight: bold;
 }
 
 /* Simple transition for expanding/collapsing chapters */

@@ -4,13 +4,13 @@ export const useLoginStore = defineStore({
   id: 'login',
   state: () => ({
     token: null,
-    user_id: null, // Store user_id
-    user_is_admin: false, // Store user_is_admin
-    user_is_teacher: false // Store user_is_teacher
+    user_id: null, 
+    user_is_admin: false, 
+    user_is_teacher: false 
   }),
   getters: {
     userAuthorised(state) {
-      return !!state.token; // Check if the token exists to determine if the user is authorized
+      return !!state.token; 
     },
   },
   actions: {
@@ -23,13 +23,13 @@ export const useLoginStore = defineStore({
       this.user_is_admin = user_is_admin;
       this.user_is_teacher = user_is_teacher;
       localStorage.setItem('user_id', user_id);
-      localStorage.setItem('user_is_admin', user_is_admin ? 'true' : 'false'); // Store as string
+      localStorage.setItem('user_is_admin', user_is_admin ? 'true' : 'false'); 
       localStorage.setItem('user_is_teacher', user_is_teacher ? 'true' : 'false');
     },
     loadUserInfoFromLocalStorage() {
       const user_id = localStorage.getItem('user_id');
-      const user_is_admin = localStorage.getItem('user_is_admin') === 'true'; // Convert to boolean
-      const user_is_teacher = localStorage.getItem('user_is_teacher') === 'true'; // Convert to boolean
+      const user_is_admin = localStorage.getItem('user_is_admin') === 'true'; 
+      const user_is_teacher = localStorage.getItem('user_is_teacher') === 'true';
       if (user_id) {
         this.user_id = user_id;
       }

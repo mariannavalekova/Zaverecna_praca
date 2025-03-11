@@ -13,7 +13,6 @@ import { RouterView } from 'vue-router';
 import Navigation from './components/Navigation.vue';
 import Footer from './components/Footer.vue';
 
-
 export default {
   components: {
     Navigation,
@@ -21,6 +20,7 @@ export default {
   }
 }
 </script>
+
 <style>
 #app {
   min-height: 100vh;
@@ -30,5 +30,9 @@ export default {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+.main-content {
+  flex: 1;
 }
 </style>

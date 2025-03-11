@@ -45,17 +45,22 @@ function getStudentLevelsDashboard() {
             $chapterId = $chapter['chapter_id'];
 
             $stmt2 = $conn->prepare("
-                SELECT level_id, title 
-                FROM levels 
-                WHERE chapter_id = :chapter_id
-                ORDER BY level_id ASC
+                SELECT 
+                    l.level_id, 
+                    l.title, 
+                    CASE WHEN cl.user_id IS NOT NULL THEN 1 ELSE 0 END AS completed
+                FROM levels l
+                LEFT JOIN completed_levels cl 
+                    ON l.level_id = cl.level_id AND cl.user_id = :user_id
+                WHERE l.chapter_id = :chapter_id
+                ORDER BY l.level_id ASC
             ");
-            $stmt2->execute(['chapter_id' => $chapterId]);
+            $stmt2->execute(['chapter_id' => $chapterId, 'user_id' => $user_id]);
             $levels = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 
             $chapter['levels'] = $levels;
         }
-        unset($chapter); 
+        unset($chapter);
 
         echo json_encode(['chapters' => $chapters]);
 
@@ -66,3 +71,4 @@ function getStudentLevelsDashboard() {
 }
 
 getStudentLevelsDashboard();
+?>

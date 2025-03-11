@@ -158,7 +158,7 @@ export default {
       obstacleItems: [
         {
           label: "Rock",
-          image_path: "/src/assets/level_assets/rock.jpg",
+          image_path: "/src/assets/level_assets/rock.png",
           type: "rock",
         },
         {

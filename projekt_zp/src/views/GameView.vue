@@ -42,9 +42,9 @@ import VisualizationView from "@/components/Visualization.vue";
 import ErrorDisplayView from "@/components/ErrorDisplay.vue";
 import CodeInputView from "@/components/CodeInput.vue";
 import CapyConsole from "@/components/CapyConsole.vue";
-import LevelHint from "@/components/LevelHint.vue"; 
+import LevelHint from "@/components/LevelHint.vue";
 
-import { useLoginStore } from "@/stores/loginStore"; 
+import { useLoginStore } from "@/stores/loginStore";
 
 export default {
   name: "GameView",
@@ -53,14 +53,14 @@ export default {
     ErrorDisplayView,
     CodeInputView,
     CapyConsole,
-    LevelHint, 
+    LevelHint,
   },
   data() {
     return {
       heroPosition: { x: 50, y: 50 },
-      heroImage: "/src/assets/idle.gif",
+      heroImage: "/src/assets/idle.png",
       errorMessage: "",
-      level: null, 
+      level: null,
       obstacles: [],
       originalObstacles: [],
       tangerinesCollected: 0,
@@ -90,25 +90,19 @@ export default {
       };
       requestAnimationFrame(animate);
     },
-
     updateHeroAnimation(animationKey) {
-      const animations = {
-        idle: "/src/assets/idle.gif",
-        moveu: "/src/assets/moveu.gif",
-        moved: "/src/assets/moved.gif",
-        mover: "/src/assets/mover.gif",
-        movel: "/src/assets/movel.gif",
-        jump: "/src/assets/jump.gif",
-        pickup: "/src/assets/pickup.gif",
-        hide: "/src/assets/hide.gif",
-        eat: "/src/assets/eat.gif",
-      };
-      this.heroImage = animations[animationKey] || "/src/assets/idle.gif";
+      if (animationKey === "movel") {
+        this.heroImage = "/src/assets/left.png";
+      } else if (animationKey === "mover") {
+        this.heroImage = "/src/assets/right.png";
+      } else {
+        this.heroImage = "/src/assets/idle.png";
+      }
     },
 
     resetCapy() {
       this.heroPosition = { x: 50, y: 50 };
-      this.heroImage = "/src/assets/idle.gif";
+      this.heroImage = "/src/assets/idle.png";
     },
 
     async executeUserCode(userCode) {
@@ -126,17 +120,16 @@ export default {
 
       try {
         addCapyToSkulpt(this);
-        const result = await executePythonAsync(
+        await executePythonAsync(
           userCode,
           (res) => {
-            console.log("Execution completed.", res);
+            console.log("Execution completed.");
           },
           (err) => {
             console.error(err.toString());
             this.errorMessage = err.toString();
           }
         );
-        //console.log("Python execution result:", result);
       } catch (error) {
         this.errorMessage = error.message || error.toString();
         console.error("Execution error:", error);
@@ -153,11 +146,9 @@ export default {
           this.errorMessage = data.error;
           return;
         }
-        this.level = data.level; 
+        this.level = data.level;
         this.obstacles = data.obstacles || [];
-        this.originalObstacles = JSON.parse(
-          JSON.stringify(data.obstacles || [])
-        );
+        this.originalObstacles = JSON.parse(JSON.stringify(data.obstacles || []));
       } catch (error) {
         console.error("Failed to load level data:", error);
         this.errorMessage = "Failed to load level data.";
@@ -274,7 +265,6 @@ export default {
 .error-display {
   margin-bottom: 10px;
 }
-
 
 @media screen and (max-width: 900px) {
   .game-container {

@@ -20,11 +20,11 @@ function getStudentClasses() {
     $conn = connect_to_database();
 
     try {
-        // Retrieve all classes that the student has joined
         $stmt = $conn->prepare("
-            SELECT c.class_id, c.class_code, c.teacher_id
+            SELECT c.class_id, c.class_code, c.teacher_id, u.teacher_name, u.teacher_surname
             FROM class AS c
             JOIN class_has_students AS chs ON c.class_id = chs.class_id
+            JOIN users AS u ON c.teacher_id = u.user_id
             WHERE chs.student_id = :student_id
         ");
         $stmt->execute(['student_id' => $student_id]);
@@ -32,7 +32,6 @@ function getStudentClasses() {
 
         $result = [];
         foreach ($classes as $class) {
-            // Retrieve all students for this class
             $stmt2 = $conn->prepare("
                 SELECT u.user_id, u.username, u.email
                 FROM class_has_students AS chs
