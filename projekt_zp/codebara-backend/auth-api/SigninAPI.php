@@ -10,7 +10,7 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 
 function UserLogin() {
-    $db = connect_to_database();
+    $db = db_connect();
     $input = file_get_contents('php://input');
     $data = json_decode($input, true);
 
@@ -40,7 +40,7 @@ function UserLogin() {
             return;
         }
 
-        $secretKey = 'M07gGoLVPCMAPuFvV2PLgFBFYH3lPb0Ov22jlxxcliX3PkBYXnXfFmXm76y5twn7'; 
+        $secretKey = 'GMBD1cqoXMbcvaJFYi0uFImhrG6YsWTalAh7alQ0iQSi3K2blZPjaYEMBd6g1EzO'; 
         $issuedAt = time();
         $expirationTime = $issuedAt + 3600; 
         $payload = [
@@ -71,7 +71,7 @@ function UserLogin() {
         echo json_encode(['message' => 'Database error: ' . $e->getMessage()]);
     } finally {
 
-        close_database_connection($db);
+        db_close($db);
     }
 }
 

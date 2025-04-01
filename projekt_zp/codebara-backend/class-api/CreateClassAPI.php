@@ -30,7 +30,7 @@ function createClass() {
     $teacher_id = intval($data['teacher_id']);
     $class_code = generateRandomString(10);
 
-    $conn = connect_to_database();
+    $conn = db_connect();
 
     try {
         $stmt = $conn->prepare("INSERT INTO class (class_code, teacher_id) VALUES (:class_code, :teacher_id)");

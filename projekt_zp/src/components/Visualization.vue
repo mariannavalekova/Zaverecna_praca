@@ -42,7 +42,7 @@ export default {
   position: relative;
   width: 500px;
   height: 500px;
-  background-image: url("/src/assets/level_assets/level_grid.png");
+  background-image: url("/img/level_grid.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -51,8 +51,8 @@ export default {
 
 .hero {
   position: absolute;
-  width: 100px;
-  height: 100px;
+  height: 66px;
+  width: 45px;
   background-size: contain;
   background-repeat: no-repeat;
 }

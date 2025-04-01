@@ -9,7 +9,7 @@ if (!isset($_GET['chapter_id'])) {
 }
 
 $chapter_id = intval($_GET['chapter_id']);
-$conn = connect_to_database();
+$conn = db_connect();
 
 try {
     $stmt = $conn->prepare("SELECT * FROM articles WHERE chapter_id = :chapter_id");

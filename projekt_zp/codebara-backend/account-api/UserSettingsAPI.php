@@ -12,7 +12,7 @@ function user_settings_api() {
         }
 
         $userId = intval($_GET['user_id']);
-        $conn = connect_to_database();
+        $conn = db_connect();
 
         try {
             $stmt = $conn->prepare("SELECT username, email, role, school_name, teacher_name, teacher_surname, is_teacher FROM users WHERE user_id = :user_id");
@@ -41,7 +41,7 @@ function user_settings_api() {
             exit;
         }
 
-        $conn = connect_to_database();
+        $conn = db_connect();
         $stmt = $conn->prepare("
             UPDATE users SET email = :email, school_name = :school_name, teacher_name = :teacher_name, 
             teacher_surname = :teacher_surname, is_teacher = :is_teacher WHERE username = :username

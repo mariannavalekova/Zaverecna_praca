@@ -17,7 +17,7 @@ function get_levels_api() {
     }
 
     $chapter_id = intval($_GET['chapter_id']);
-    $conn = connect_to_database();
+    $conn = db_connect();
 
     try {
         $stmt = $conn->prepare("SELECT level_id, title, chapter_id, description, tangerine_count FROM levels WHERE chapter_id = :chapter_id ORDER BY level_id ASC");

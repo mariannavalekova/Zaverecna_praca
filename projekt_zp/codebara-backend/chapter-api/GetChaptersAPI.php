@@ -10,7 +10,7 @@ function get_chapters_api() {
         exit;
     }
 
-    $conn = connect_to_database();
+    $conn = db_connect();
 
     try {
         $stmt = $conn->prepare("SELECT chapter_id, title FROM chapters ORDER BY chapter_id ASC");

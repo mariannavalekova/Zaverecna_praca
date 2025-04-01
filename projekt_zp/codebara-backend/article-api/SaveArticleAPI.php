@@ -17,7 +17,7 @@ if (!isset($data['chapter_id']) || !isset($data['content'])) {
 
 $chapter_id = intval($data['chapter_id']);
 $content = $data['content'];
-$conn = connect_to_database();
+$conn = db_connect();
 
 try {
     $stmt = $conn->prepare("SELECT article_id FROM articles WHERE chapter_id = :chapter_id");

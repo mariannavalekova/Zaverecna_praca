@@ -18,7 +18,7 @@ function updateUserSettings() {
         exit;
     }
 
-    $conn = connect_to_database();
+    $conn = db_connect();
     $stmt = $conn->prepare("
         UPDATE users SET 
             username = :username, 

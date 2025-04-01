@@ -3,22 +3,36 @@ import Sk from "skulpt";
 export function addCapyToSkulpt(vueInstance) {
   const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
+  const HERO_WIDTH = 45;
+  const HERO_HEIGHT = 66;
+  const BOUNDARY_WIDTH = 500;
+  const BOUNDARY_HEIGHT = 500;
+
   function collides(heroX, heroY, obs) {
-    const heroWidth = 100,
-      heroHeight = 100;
     const obsWidth = 50,
       obsHeight = 50;
+
     return (
       heroX < obs.position_x + obsWidth &&
-      heroX + heroWidth > obs.position_x &&
+      heroX + HERO_WIDTH > obs.position_x &&
       heroY < obs.position_y + obsHeight &&
-      heroY + heroHeight > obs.position_y
+      heroY + HERO_HEIGHT > obs.position_y
     );
+  }
+
+  function clampX(x) {
+    const maxX = BOUNDARY_WIDTH - HERO_WIDTH;
+    return Math.max(0, Math.min(x, maxX));
+  }
+
+  function clampY(y) {
+    const maxY = BOUNDARY_HEIGHT - HERO_HEIGHT;
+    return Math.max(0, Math.min(y, maxY));
   }
 
   const Capy = function ($gbl, $loc) {
     $loc.__init__ = new Sk.builtin.func(function (self) {
-      self.position = { x: 50, y: 50 };
+      self.position = { x: 53, y: 55 };
       return Sk.builtin.none.none$;
     });
 
@@ -32,7 +46,8 @@ export function addCapyToSkulpt(vueInstance) {
 
       vueInstance.updateHeroAnimation("mover");
       const deltaX = 50 * steps;
-      const newX = self.position.x + deltaX;
+      let newX = self.position.x + deltaX;
+      newX = clampX(newX);
 
       const rockCollision = vueInstance.obstacles.some(
         (obs) => obs.type === "rock" && collides(newX, self.position.y, obs)
@@ -47,7 +62,8 @@ export function addCapyToSkulpt(vueInstance) {
       setTimeout(() => {
         const finishCollision = vueInstance.obstacles.some(
           (obs) =>
-            obs.type === "finish" && collides(self.position.x, self.position.y, obs)
+            obs.type === "finish" &&
+            collides(self.position.x, self.position.y, obs)
         );
         if (finishCollision && typeof vueInstance.levelCompleted === "function") {
           vueInstance.levelCompleted();
@@ -69,7 +85,8 @@ export function addCapyToSkulpt(vueInstance) {
 
       vueInstance.updateHeroAnimation("movel");
       const deltaX = -50 * steps;
-      const newX = self.position.x + deltaX;
+      let newX = self.position.x + deltaX;
+      newX = clampX(newX);
 
       const rockCollision = vueInstance.obstacles.some(
         (obs) => obs.type === "rock" && collides(newX, self.position.y, obs)
@@ -84,7 +101,8 @@ export function addCapyToSkulpt(vueInstance) {
       setTimeout(() => {
         const finishCollision = vueInstance.obstacles.some(
           (obs) =>
-            obs.type === "finish" && collides(self.position.x, self.position.y, obs)
+            obs.type === "finish" &&
+            collides(self.position.x, self.position.y, obs)
         );
         if (finishCollision && typeof vueInstance.levelCompleted === "function") {
           vueInstance.levelCompleted();
@@ -106,7 +124,8 @@ export function addCapyToSkulpt(vueInstance) {
 
       vueInstance.updateHeroAnimation("moveu");
       const deltaY = -50 * steps;
-      const newY = self.position.y + deltaY;
+      let newY = self.position.y + deltaY;
+      newY = clampY(newY);
 
       const rockCollision = vueInstance.obstacles.some(
         (obs) => obs.type === "rock" && collides(self.position.x, newY, obs)
@@ -121,7 +140,8 @@ export function addCapyToSkulpt(vueInstance) {
       setTimeout(() => {
         const finishCollision = vueInstance.obstacles.some(
           (obs) =>
-            obs.type === "finish" && collides(self.position.x, self.position.y, obs)
+            obs.type === "finish" &&
+            collides(self.position.x, self.position.y, obs)
         );
         if (finishCollision && typeof vueInstance.levelCompleted === "function") {
           vueInstance.levelCompleted();
@@ -143,7 +163,8 @@ export function addCapyToSkulpt(vueInstance) {
 
       vueInstance.updateHeroAnimation("moved");
       const deltaY = 50 * steps;
-      const newY = self.position.y + deltaY;
+      let newY = self.position.y + deltaY;
+      newY = clampY(newY);
 
       const rockCollision = vueInstance.obstacles.some(
         (obs) => obs.type === "rock" && collides(self.position.x, newY, obs)
@@ -158,7 +179,8 @@ export function addCapyToSkulpt(vueInstance) {
       setTimeout(() => {
         const finishCollision = vueInstance.obstacles.some(
           (obs) =>
-            obs.type === "finish" && collides(self.position.x, self.position.y, obs)
+            obs.type === "finish" &&
+            collides(self.position.x, self.position.y, obs)
         );
         if (finishCollision && typeof vueInstance.levelCompleted === "function") {
           vueInstance.levelCompleted();
@@ -175,7 +197,7 @@ export function addCapyToSkulpt(vueInstance) {
       vueInstance.obstacles = vueInstance.obstacles.filter((obs) => {
         if (obs.type === "tangerine" && collides(self.position.x, self.position.y, obs)) {
           collected = true;
-          return false; 
+          return false;
         }
         return true;
       });
@@ -193,22 +215,20 @@ export function addCapyToSkulpt(vueInstance) {
       );
     });
 
+    $loc.say = new Sk.builtin.func(function (self, message) {
+      message = Sk.ffi.remapToJs(message);
 
-$loc.say = new Sk.builtin.func(function (self, message) {
-  message = Sk.ffi.remapToJs(message);
+      if (!vueInstance.capyMessages) {
+        vueInstance.capyMessages = [];
+      }
+      vueInstance.capyMessages.push(message);
 
-  if (!vueInstance.capyMessages) {
-    vueInstance.capyMessages = [];
-  }
-  vueInstance.capyMessages.push(message);
+      console.log(`Capy says: "${message}"`);
 
-  console.log(`Capy says: "${message}"`);
-
-  return Sk.misceval.promiseToSuspension(
-    sleep(1000).then(() => Sk.builtin.none.none$)
-  );
-});
-
+      return Sk.misceval.promiseToSuspension(
+        sleep(1000).then(() => Sk.builtin.none.none$)
+      );
+    });
   };
 
   Sk.builtin.Capy = Sk.misceval.buildClass(Sk.builtins, Capy, "Capy", []);

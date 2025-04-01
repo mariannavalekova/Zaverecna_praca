@@ -22,7 +22,7 @@ function registration_api() {
     $username = trim($data['username']);
     $email    = trim($data['email']);
     $password = $data['password'];
-    $conn = connect_to_database();
+    $conn = db_connect();
 
     try {
         $stmt = $conn->prepare("SELECT COUNT(*) FROM users WHERE username = :username");

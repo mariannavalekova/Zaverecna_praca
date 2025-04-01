@@ -19,7 +19,7 @@ function create_chapter_api() {
     }
 
     $title = trim($data['title']);
-    $conn = connect_to_database();
+    $conn = db_connect();
 
     try {
         $stmt = $conn->prepare("INSERT INTO chapters (title) VALUES (:title)");

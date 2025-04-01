@@ -25,7 +25,7 @@ function save_level_details_api() {
 
     $obstacles = isset($data['obstacles']) ? $data['obstacles'] : [];
 
-    $conn = connect_to_database();
+    $conn = db_connect();
     try {
         $stmt = $conn->prepare("
             UPDATE levels

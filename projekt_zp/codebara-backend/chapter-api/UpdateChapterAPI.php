@@ -19,7 +19,7 @@ function update_chapter_api() {
 
     $chapter_id = intval($data['chapter_id']);
     $title = trim($data['title']);
-    $conn = connect_to_database();
+    $conn = db_connect();
 
     try {
         $stmt = $conn->prepare("UPDATE chapters SET title = :title WHERE chapter_id = :chapter_id");

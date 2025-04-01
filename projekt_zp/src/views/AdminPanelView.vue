@@ -90,7 +90,6 @@
               this.router.push({ name: 'adminLogin' }); 
   
             } catch (error) {
-              console.error('Logout error:', error);
             }
         }
       }

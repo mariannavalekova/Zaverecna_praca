@@ -19,7 +19,7 @@ function create_level_api() {
 
     $chapter_id = intval($data['chapter_id']);
     $title = trim($data['title']);
-    $conn = connect_to_database();
+    $conn = db_connect();
 
     try {
         $stmt = $conn->prepare("INSERT INTO levels (title, chapter_id) VALUES (:title, :chapter_id)");

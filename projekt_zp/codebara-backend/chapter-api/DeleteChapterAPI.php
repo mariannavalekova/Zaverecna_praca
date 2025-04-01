@@ -18,7 +18,7 @@ function delete_chapter_api() {
     }
 
     $chapter_id = intval($data['chapter_id']);
-    $conn = connect_to_database();
+    $conn = db_connect();
 
     try {
         $stmt = $conn->prepare("DELETE FROM chapters WHERE chapter_id = :chapter_id");

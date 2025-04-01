@@ -17,7 +17,7 @@ function getClassDetails() {
     }
 
     $teacher_id = intval($_GET['teacher_id']);
-    $conn = connect_to_database();
+    $conn = db_connect();
 
     try {
         // Retrieve all classes for the given teacher

@@ -57,8 +57,8 @@ export default {
   },
   data() {
     return {
-      heroPosition: { x: 50, y: 50 },
-      heroImage: "/src/assets/idle.png",
+      heroPosition: { x: 53, y: 55 },
+      heroImage: "/img/idle.png",
       errorMessage: "",
       level: null,
       obstacles: [],
@@ -92,17 +92,17 @@ export default {
     },
     updateHeroAnimation(animationKey) {
       if (animationKey === "movel") {
-        this.heroImage = "/src/assets/left.png";
+        this.heroImage = "/img/left.png";
       } else if (animationKey === "mover") {
-        this.heroImage = "/src/assets/right.png";
+        this.heroImage = "/img/right.png";
       } else {
-        this.heroImage = "/src/assets/idle.png";
+        this.heroImage = "/img/idle.png";
       }
     },
 
     resetCapy() {
-      this.heroPosition = { x: 50, y: 50 };
-      this.heroImage = "/src/assets/idle.png";
+      this.heroPosition = { x: 53, y: 55 };
+      this.heroImage = "/img/idle.png";
     },
 
     async executeUserCode(userCode) {
@@ -126,13 +126,11 @@ export default {
             console.log("Execution completed.");
           },
           (err) => {
-            console.error(err.toString());
             this.errorMessage = err.toString();
           }
         );
       } catch (error) {
         this.errorMessage = error.message || error.toString();
-        console.error("Execution error:", error);
       }
     },
 
@@ -150,7 +148,7 @@ export default {
         this.obstacles = data.obstacles || [];
         this.originalObstacles = JSON.parse(JSON.stringify(data.obstacles || []));
       } catch (error) {
-        console.error("Failed to load level data:", error);
+        console.error("Failed to load level data:");
         this.errorMessage = "Failed to load level data.";
       }
     },

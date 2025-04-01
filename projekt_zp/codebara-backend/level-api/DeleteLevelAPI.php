@@ -18,7 +18,7 @@ function delete_level_api() {
     }
 
     $level_id = intval($data['level_id']);
-    $conn = connect_to_database();
+    $conn = db_connect();
 
     try {
         $stmt = $conn->prepare("DELETE FROM levels WHERE level_id = :level_id");

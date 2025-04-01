@@ -75,10 +75,8 @@
     },
     methods: {
       validatePassword(password) {
-        console.log('Validating password:', password);
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&_])[A-Za-z\d@$!%*?&_]{8,16}$/;
         const isValid = passwordRegex.test(password);
-        console.log('Password valid:', isValid);
         return isValid;
       },
       togglePasswordVisibility() {
@@ -88,15 +86,12 @@
         this.errorMessage = '';
         this.successMessage = '';
   
-        console.log('data:', this.user);
-  
         if (!this.validatePassword(this.user.password)) {
           this.errorMessage = 'Password must be 8-16 characters long, contain at least 1 uppercase letter, 1 lowercase letter, 1 number, and 1 symbol.';
           return;
         }
   
         const url = './codebara-backend/auth-api/RegistrationAPI.php';
-        console.log('Sending request to:', url);
   
         fetch(url, {
           method: 'POST',
@@ -106,21 +101,18 @@
           body: JSON.stringify(this.user)
         })
         .then(response => {
-          console.log('Response status:', response.status);
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
           return response.json();
         })
         .then(data => {
-          console.log('Response data:', data);
           this.successMessage = 'User registered successfully';
           setTimeout(() => {
             this.$router.push({ path: '/signin' });
           }, 2000);
         })
         .catch(error => {
-          console.error('There was an error!', error);
           this.errorMessage = 'There was an error! ' + error.message;
         });
       }

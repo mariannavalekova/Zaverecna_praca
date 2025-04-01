@@ -20,7 +20,7 @@ function joinClass() {
     $student_id = intval($data['student_id']);
     $class_code = trim($data['class_code']);
 
-    $conn = connect_to_database();
+    $conn = db_connect();
 
     try {
         // Find the class by its class code

@@ -17,7 +17,7 @@ function get_level_details_api() {
     }
 
     $level_id = intval($_GET['level_id']);
-    $conn = connect_to_database();
+    $conn = db_connect();
 
     try {
         $stmt = $conn->prepare("

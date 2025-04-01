@@ -20,7 +20,7 @@ if (!isset($data['user_id']) || !isset($data['level_id'])) {
 $user_id = intval($data['user_id']);
 $level_id = intval($data['level_id']);
 
-$conn = connect_to_database();
+$conn = db_connect();
 
 try {
     $checkStmt = $conn->prepare("

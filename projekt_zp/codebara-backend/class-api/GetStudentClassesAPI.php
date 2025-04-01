@@ -17,7 +17,7 @@ function getStudentClasses() {
     }
 
     $student_id = intval($_GET['student_id']);
-    $conn = connect_to_database();
+    $conn = db_connect();
 
     try {
         $stmt = $conn->prepare("

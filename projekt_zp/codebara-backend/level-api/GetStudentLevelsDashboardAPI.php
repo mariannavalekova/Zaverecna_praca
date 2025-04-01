@@ -17,7 +17,7 @@ function getStudentLevelsDashboard() {
     }
 
     $user_id = intval($_GET['user_id']);
-    $conn = connect_to_database();
+    $conn = db_connect();
 
     try {
         $sql = "

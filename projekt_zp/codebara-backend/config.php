@@ -32,14 +32,15 @@ class Database {
     }
 }
 
-function connect_to_database() {
-    $database = new Database('127.0.0.1', 3306,'root', '', 'codebara');
+function db_connect() {
+    $database = new Database('mariadb105.r6.websupport.sk', 3315,'codebara_user', '#uW5kajMhAzEK>=gl36u', 'codebara');
+    //$connection = new PDO("mysql:host=mariadb105.r6.websupport.sk;port=3315;dbname=codebara", "codebara_user", "tu_vlozte_heslo");
     $connection = $database->connect();
     
     return $connection;
 }
 
-function close_database_connection($connection) {
+function db_close($connection) {
     $connection = null;
 }
 ?>

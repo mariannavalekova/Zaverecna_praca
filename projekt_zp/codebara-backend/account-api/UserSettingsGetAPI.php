@@ -17,7 +17,7 @@ function getUserSettings() {
     }
 
     $userId = intval($_GET['user_id']);
-    $conn = connect_to_database();
+    $conn = db_connect();
 
     try {
         $stmt = $conn->prepare("SELECT username, email, school_name, teacher_name, teacher_surname, is_teacher FROM users WHERE user_id = :user_id");
