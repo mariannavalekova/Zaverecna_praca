@@ -7,7 +7,6 @@
       <div class="menu">
         <router-link :to="homeRoute" class="menu-item">Home</router-link>
         <router-link to="/learn" class="menu-item">Learn</router-link>
-        
       </div>
     </div>
     <div class="auth">
